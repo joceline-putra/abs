@@ -259,7 +259,7 @@ class Konfigurasi extends MY_Controller{
                     'location_allow_radius' => $data['distance']                                   
                 );             
                 $params_check = array(
-                    'location_code' => $kode,
+                    'location_name' => $nama,
                     'location_branch_id' => $session_branch_id
                 );                        
                 $columns = array(

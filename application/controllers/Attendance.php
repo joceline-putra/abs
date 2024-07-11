@@ -593,7 +593,7 @@ class Attendance extends MY_Controller{
                     break;
                 case "get_location":
                     $return->status=1;
-                    $return->result = $this->Lokasi_model->get_all_lokasis(['location_branch_id'=>1],null,null,null,'location_name','asc');
+                    $return->result = $this->Lokasi_model->get_all_lokasis(['location_branch_id'=>1,'location_flag'=>1],null,null,null,'location_name','asc');
                     break;
                 case "checkin":
                     $params = array(
@@ -609,7 +609,7 @@ class Attendance extends MY_Controller{
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
                     if(strlen($post_upload) > 10){
                         $image_config=array(
-                            'compress' => 0,
+                            'compress' => 1,
                             'width'=>$this->image_width,
                             'height'=>$this->image_height
                         );
@@ -692,7 +692,7 @@ class Attendance extends MY_Controller{
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
                     if(strlen($post_upload) > 10){
                         $image_config=array(
-                            'compress' => 0,
+                            'compress' => 1,
                             'width'=>$this->image_width,
                             'height'=>$this->image_height
                         );

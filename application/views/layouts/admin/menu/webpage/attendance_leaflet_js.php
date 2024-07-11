@@ -5,7 +5,7 @@
         //Map Config
         let mapLAT      = -6.200000;
         let mapLNG      = 106.816666;
-        let mapZOOM     = 20;
+        let mapZOOM     = 18;
         
         let geocoderADDRESS;
 
@@ -16,8 +16,8 @@
         let additionalMarkers = [];            
         let infowindow;
 
-        let redICON = 'upload/map_icon/red.png';
-        let greenICON = 'upload/map_icon/green.png';
+        let redICON     = 'upload/map_icon/red.png';
+        let greenICON   = 'upload/map_icon/green.png';
 
         function initMap() {
             // map = new google.maps.Map(document.getElementById('map'), {
@@ -41,11 +41,11 @@
             //     };
             //     console.log('Marker baru:', newPosition);
             // });
-            map = L.map('map').setView([mapLAT, mapLNG], 20);
+            map = L.map('map').setView([mapLAT, mapLNG], mapZOOM);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);     
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);     
                 
             // L.marker([mapLAT, mapLNG]).addTo(map)
             //     .bindPopup('A pretty CSS popup.<br> Easily customizable.')
@@ -59,7 +59,7 @@
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
-                    console.log('Update Location:'+JSON.stringify(pos));  
+                    console.log('getLocation() => :'+JSON.stringify(pos));  
                     updateLocation(pos);
 
                 }, function() {
@@ -70,48 +70,47 @@
                 console.log('Error: The Geolocation service failed.');
             }
         }
-        function updateLocation(position) {
-                const newPos = {
-                    lat: position.lat,
-                    lng: position.lng
-                };                                
-                // marker.setPosition(newPos);
-                // map.setCenter(newPos);
-                $("#latlng").val(position.lat+', '+position.lng);
-                // updateGeoCoder(newPos);
+        function updateLocation(position) { //marker
+            const newPos = {
+                lat: position.lat,
+                lng: position.lng
+            };                         
+            $("#latlng").val(position.lat+', '+position.lng);
+            updateGeoCoder(L.latLng(position.lat,position.lng));
 
-                var setIcon = L.icon({
-                    iconUrl: greenICON, // Ganti dengan URL gambar ikon berwarna merah
-                    iconSize: [38, 38], // Ukuran ikon
-                    iconAnchor: [19, 38], // Titik jangkar ikon, sesuai dengan posisi ikon di peta
-                    popupAnchor: [0, -38] // Titik jangkar popup, relatif terhadap titik jangkar ikon
-                });
+            var setIcon = L.icon({
+                iconUrl: greenICON, // Ganti dengan URL gambar ikon berwarna merah
+                iconSize: [38, 38], // Ukuran ikon
+                iconAnchor: [19, 38], // Titik jangkar ikon, sesuai dengan posisi ikon di peta
+                popupAnchor: [0, -38] // Titik jangkar popup, relatif terhadap titik jangkar ikon
+            });
+            
+            // Menambahkan marker ke peta
+            marker = L.marker([position.lat, position.lng], {icon: setIcon}).addTo(map)
+                .bindPopup('Lokasi Saya')
+                .openPopup();      
                 
-                // Menambahkan marker ke peta
-                var marker = L.marker([position.lat, position.lng], {icon: setIcon}).addTo(map)
-                    .bindPopup('Lokasi Saya')
-                    .openPopup();                
+            map.setView([position.lat,position.lng], mapZOOM);
         }        
-            function updateGeoCoder(location){
-                // const geocoder = new google.maps.Geocoder();
-                // const location = { lat: lat, lng: lng }; // Create a location object with lat and lng
+        function updateGeoCoder(latlng) {
+            var url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
 
-                geocoder.geocode({ location: location }, function(results, status) {
-                    // console.log(results);
-                if (status === 'OK') {
-                    if (results[0]) {
-                        abc = results[0]; // Store the result in the variable abc
-                        // console.log(abc);  // Log the result to the console
-                        geocoderADDRESS = abc['formatted_address'];
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.address) {
+                        // L.marker(latlng).addTo(map)
+                        //     .bindPopup(data.display_name)
+                        //     .openPopup();
+                        // map.setView(latlng, 13);
+                        // console.log(data.display_name);
+                        geocoderADDRESS = data.display_name;
                     } else {
-                        notif(0,'No results found');
+                        alert('Location not found');
                     }
-                } else {
-                    console.log('Geocode was not successful for the following reason: ' + status);
-                }
-                });
-                // console.log(geocoderADDRESS);
-            }
+                })
+                .catch(err => console.error(err));
+        }   
         function getCircle(){ //Ajax
             let form = new FormData();
             form.append('action', 'get_location');
@@ -141,15 +140,18 @@
                 }
             });
         }
-        function updateCircle(positions){
+        function updateCircle(positions){ //circle, marker2 => additionalCircles, additionalMarkers
+            // console.log(positions);
             positions.forEach(v => {
                 // Menambahkan lingkaran ke peta
                 circle = L.circle([parseFloat(v['location_lat']), parseFloat(v['location_lng'])], {
                     color: 'red',
                     fillColor: '#f03',
                     fillOpacity: 0.5,
-                    radius: 500
+                    // radius: parseInt(v['location_allow_radius'])
+                    radius:40
                 }).addTo(map);           
+                circle.bindTooltip(v['location_id']);
 
                 // Menambahkan tooltip ke lingkaran
                 // circle.bindTooltip(v['location_name'], {
@@ -162,8 +164,10 @@
                     .bindPopup(v['location_name'])
                     .openPopup();                 
 
+                
                 additionalCircles.push(circle);
-                additionalMarkers.push(marker2);
+                additionalMarkers.push(marker2)
+                // console.log(additionalCircles);
                 // circle.bindPopup(v['location_name']);     
             });
         }
@@ -180,45 +184,50 @@
                 map.removeLayer(marker2);
             });
             additionalMarkers = [];
-        }            
-
+        }      
         function checkIfMarkerInCircles() {
-            if (!marker || additionalCircles.length === 0) {
-                console.log('Marker or circles not initialized.');
-                return;
-            }
+            // console.log(marker);
+            // console.log(marker.getLatLng());
+            // console.log(additionalCircles);
+            // console.log(marker2);
+            // if (!marker || additionalCircles.length === 0) {
+            //     notif(0,'Marker / circle belum diload');
+            //     console.log('Marker or circles not initialized.');
+            //     return;
+            // }
 
-            const markerPosition = marker.getPosition();
             let isInAnyCircle = false;
-            let closestDistance = Infinity;
             let returnDistance = 0;
-            let closestLabel = '';
 
             additionalCircles.forEach(circle => {
-                const circleCenter = circle.getCenter();
-                const circleRadius = circle.getRadius();
+                // sirc =  { 
+                //     label: circle['_tooltip']['_content'],
+                //     center: L.latLng(circle['_latlng']['lat'], circle['_latlng']['lng']), 
+                //     radius: circle['_mRadius']
+                // };
 
-                // Hitung jarak antara marker dan pusat lingkaran
-                const distance = google.maps.geometry.spherical.computeDistanceBetween(circleCenter, markerPosition);
-
-                if (distance <= circleRadius) {
-                    isInAnyCircle = true;
-                    if (distance < closestDistance) {
-                        closestDistance = distance;
-                        closestLabel = circle.label;
-                    }
-                }
-                returnDistance = distance;
+                var m1 = marker.getLatLng(); //Marker Saya
+                var m2 = L.latLng(circle['_latlng']['lat'], circle['_latlng']['lng']); // Array Radius
+                
+                distanceToCircle = m1.distanceTo(m2);  
+                // console.log(distanceToCircle.toFixed(2)+' meter');
+                if (distanceToCircle <= circle['_mRadius']) {
+                    isInAnyCircle = true;          
+                    closestLabel = circle['_tooltip']['_content'];
+                    // locationID = closestLabel;                    
+                }                
+                returnDistance = distanceToCircle;
             });
 
+            // Memeriksa apakah marker berada dalam salah satu lingkaran
             if (isInAnyCircle) {
-                // alert(`Marker is inside at least one circle. Closest distance: ${closestDistance.toFixed(2)} meters.`);
-                return {status:1,meter:closestDistance.toFixed(2),label:closestLabel};
+                // alert(`Marker berada di dalam salah satu lingkaran [${closestLabel}], ${returnDistance.toFixed(2)}`);
+                return {status:1,meter:returnDistance.toFixed(2),label:closestLabel};
             } else {
-                notif(0,'Marker is outside all circles.');
+                // alert(`Marker tidak berada di dalam kedua lingkaran, kurang ${returnDistance.toFixed(2)}`);
                 return {status:0,meter:returnDistance.toFixed(2)};
-            }
-        }        
+            }         
+        }                
 
         function checkDashboardActivity(limit_start) {
             // $.playSound("http://www.noiseaddicts.com/samples_1w72b820/3721.mp3");
@@ -308,10 +317,10 @@
         }
         window.onload = function() {
             initMap();
-            // initMapLeaflet();
             getCircle();
-            // setInterval(getLocation, 5000); // Polling setiap 10 detik
+            setInterval(getLocation, 60000); // Polling setiap 10 detik
         };
+        // getCircle();
         // Dashboard Scroll Activities
             var limit_start = 1;
             var next_ = true; // true = data ada dimuat kembali & false = data tidak ada!
@@ -494,17 +503,17 @@
         $(document).on("click","#btn_checkin", function(e){
             e.preventDefault();
             e.stopPropagation();
-            let markerPosition = marker.getPosition();
-            let mDistance = checkIfMarkerInCircles();
-            console.log(mDistance);
+            var markerPosition = marker.getLatLng();
+            var mDistance = checkIfMarkerInCircles();
+            // console.log(mDistance);
             if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
                 // let form = new FormData($("#form_checkin")[0]);
-                let form = new FormData();                    
+                var form = new FormData();                    
                 form.append('action', 'checkin');
-                form.append('lat', markerPosition.lat());         
-                form.append('lng', markerPosition.lng());  
+                form.append('lat', markerPosition['lat']);         
+                form.append('lng', markerPosition['lng']);  
                 form.append('location_id', mDistance['label']);       
                 // form.append('files',$("#camera_input")[0].files[0]);
                 form.append('address',geocoderADDRESS); 
@@ -519,10 +528,12 @@
                     contentType: false,
                     processData: false,
                     beforeSend:function(x){
+                        notif(1,'Silahkan tunggu');
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
                     },
                     success:function(d){
+                        $("#modal_checkin").modal('hide');                        
                         // let s = d.status;
                         // let m = d.message;
                         // let r = d.result;
@@ -546,17 +557,17 @@
         $(document).on("click","#btn_checkout", function(e){
             e.preventDefault();
             e.stopPropagation();
-            let markerPosition = marker.getPosition();
-            let mDistance = checkIfMarkerInCircles();
-            console.log(mDistance);
+            var markerPosition = marker.getLatLng();
+            var mDistance = checkIfMarkerInCircles();
+            // console.log(mDistance);
             if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
-                let form = new FormData();
+                var form = new FormData();
                 form.append('action', 'checkout');
-                form.append('lat', markerPosition.lat());         
-                form.append('lng', markerPosition.lng());   
-                form.append('location_id', mDistance['label']);
+                form.append('lat', markerPosition['lat']);         
+                form.append('lng', markerPosition['lng']);  
+                form.append('location_id', mDistance['label']);  
                 form.append('keterangan', $("#keterangan").val());  
                 form.append('address',geocoderADDRESS); 
                 form.append('file', $(".img_checkout").attr('data-image'));                                                                                   
@@ -569,6 +580,7 @@
                     beforeSend:function(x){
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                        notif(1,'Silahkan tunggu');
                     },
                     success:function(d){
                         let s = d.status;
@@ -577,7 +589,8 @@
                         if(parseInt(s) == 1){
                             // notif(s,m);
                             /* hint zz_for or zz_each */
-                            
+                            $("#modal_checkout").modal('hide');   
+                            $("#keterangan").val('');
                         }else{
                             // notif(s,m);
                         }
@@ -594,11 +607,11 @@
         $(document).on("click","#btn_posting", function(e){
             e.preventDefault();
             e.stopPropagation();
-            let markerPosition = marker.getPosition();            
-            let form = new FormData();
+            var markerPosition = marker.getLatLng();         
+            var form = new FormData();
             form.append('action', 'posting');
-            form.append('lat', markerPosition.lat());         
-            form.append('lng', markerPosition.lng());   
+            form.append('lat', markerPosition['lat']);         
+            form.append('lng', markerPosition['lng']);    
             form.append('keterangan', $("#keterangan_posting").val());     
             form.append('address',geocoderADDRESS); 
             form.append('file', $(".img_posting").attr('data-image'));                                                                           
@@ -609,6 +622,7 @@
                 dataType: 'json', cache: 'false', 
                 contentType: false, processData: false,
                 beforeSend:function(x){
+                    notif(1,'Silahkan tunggu');
                     // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                     // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
                 },
@@ -619,7 +633,8 @@
                     if(parseInt(s) == 1){
                         // notif(s,m);
                         /* hint zz_for or zz_each */
-                        
+                        $("#modal_posting").modal('hide');   
+                        $("#keterangan_posting").val('');
                     }else{
                         // notif(s,m);
                     }

@@ -15,7 +15,7 @@
 </style>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <?php include '_navigation.php'; ?>
+        <?php #include '_navigation.php'; ?>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
@@ -45,12 +45,12 @@
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a href="#" class="btn-print-all" data-action="1" data-format="html" data-request="report_purchase_buy_account_payable">
+                                                    <a href="#" class="btn-print-all" data-action="1" data-format="html" data-request="report_absen">
                                                         <i class="fas fa-file-pdf"></i>&nbsp;&nbsp;PDF
                                                     </a>
                                                 </li>
                                                 <li class="hide">
-                                                    <a href="#" class="btn-print-all" data-action="2" data-format="xls" data-request="report_purchase_buy_account_payable">
+                                                    <a href="#" class="btn-print-all" data-action="2" data-format="xls" data-request="report_absen">
                                                         <i class="fas fa-file-excel"></i>&nbsp;&nbsp;Excel
                                                     </a>
                                                 </li>
@@ -59,18 +59,18 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                    <!-- <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group"> -->
-                                    <!-- <label class="form-label">Periode Awal</label> -->
-                                    <!-- <div class="col-md-12 col-sm-12 padding-remove-side"> -->
-                                    <!-- <div class="input-append success date col-md-12 col-lg-12 no-padding"> -->
-                                    <input name="start" id="start" type="hidden" class="form-control input-sm" readonly="true"
-                                           value="<?php echo $first_date; ?>">
-                                         <!-- <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span> -->
-                                    <!-- </div> -->
-                                    <!-- </div> -->
-                                    <!-- </div> -->
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group">
-                                        <label class="form-label">Sampai Dengan</label>
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <label class="form-label">Periode Awal</label>
+                                        <div class="col-md-12 col-sm-12 padding-remove-side">
+                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                <input name="start" id="start" type="text" class="form-control input-sm" readonly="true"
+                                                       value="<?php echo $first_date; ?>">
+                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <label class="form-label">Periode Akhir</label>
                                         <div class="col-md-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">
                                                 <input name="end" id="end" type="text" class="form-control input-sm" readonly="true"
@@ -79,18 +79,48 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-left">
+                                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label"><?php echo $supplier_alias; ?></label>
-                                            <select id="filter_contact" name="filter_contact" class="form-control">
+                                            <label class="form-label">Karyawan</label>
+                                            <select id="filter_kontak" name="filter_kontak" class="form-control">
                                                 <option value="0">-- Semua --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                            <label class="form-label">Jenis</label>
+                                            <select id="filter_type" name="filter_type" class="form-control">
+                                                <option value="1">CheckIN</option>
+                                                <option value="2">CheckOUT</option> 
+                                                <option value="3">Post Gambar</option>
+                                                <option value="0">Semua</option>
+                                                <option value="100">Check In / Out / Sakit / Ijin</option>                                                                                                                                                
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                            <label class="form-label">Sorting</label>
+                                            <select id="filter_order" name="filter_order" class="form-control">
+                                                <option value="0">Tanggal</option>
+                                                <option value="1">Lokasi</option>
+                                                <option value="3">Karyawan</option>                                                                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                            <label class="form-label">Urutan</label>
+                                            <select id="filter_dir" name="filter_dir" class="form-control">
+                                                <option value="asc">Ascending</option>
+                                                <option value="desc">Descending</option>
                                             </select>
                                         </div>
                                     </div>                                      
                                 </div>  
                                 <div class="col-md-12 col-xs-12 col-sm-12 table-responsive">
-                                    <table id="table-data" class="table table-bordered" data-limit-start="0" data-limit-end="10"
-                                           style="width:100%;">
+                                    <table id="table-data" class="table table-bordered" data-limit-start="0" data-limit-end="10" style="width:100%;">
                                     </table>
                                 </div>
                             </div>

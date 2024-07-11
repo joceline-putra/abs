@@ -35,7 +35,7 @@ class Attendance_model extends CI_Model{
     }
 
     function set_join(){
-        $this->db->join('locationss','att_location_id=location_id','left');
+        $this->db->join('locations','att_location_id=location_id','left');
         $this->db->join('users','att_user_id=user_id','left');        
     }
 

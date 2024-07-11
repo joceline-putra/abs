@@ -1,15 +1,15 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
+        <ul class="nav nav-tabs" role="tablist" style="display:inline;">  
             <li class="active">
-                <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
-                <span class="fas fa-calendar-alt"></span> Dashboard</a>
-            </li>           
+                    <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true">
+                    <span class="fas fa-plus-square"></span> Absen</a>
+                </li> 
             <li class="">
-                <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="true">
-                <span class="fas fa-plus-square"></span> Absen</a>
-            </li> 
+                <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
+                <span class="fas fa-calendar-alt"></span> Aktifitas</a>
+            </li>       
             <!-- 
             <li class="">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="true">
@@ -19,6 +19,85 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
+                <!-- <div class="col-md-12 col-xs-12 col-sm-12"> -->
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-md-12 col-xs-12">                    
+                            <button id="btn_fetch_location" class="btn btn-success btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-map-marker-alt"></i> 
+                                Perbarui Lokasi
+                            </button>
+                        </div>                    
+                    </div>
+                    <div class="row" style="margin-bottom:20px;">   
+                        <div class="col-md-12 col-xs-12">
+                            <div id="map" style="height: 200px; width: 100%;border:1px solid #eaeaea;"></div>
+                        </div>
+                    </div>                 
+                    <div class="hide col-md-12 col-xs-12" style="margin-top:20px;margin-bottom:20px;"> 
+                        <button id="btn_take_selfie" class="btn btn-primary btn-lg" type="button" style="width:100%;">
+                            <i class="fas fa-ban"></i> 
+                            Take Selfie
+                        </button>
+                    </div>
+                    <div class="row hide" style="margin-bottom:20px;">
+                        <div class="col-md-4 col-xs-6 padding-remove-side">
+                            <div class="form-group">
+                                <div class="controls">
+                                    <input name="latlng" id="latlng" type="text" class="form-control input-lg" placeholder="Lat & Lng">
+                                </div>
+                            </div>
+                        </div>                
+                        <div class="col-md-4 col-xs-6 padding-remove-side">                    
+                            <button id="btn_move_location" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-ban"></i> 
+                                Move Coordinate
+                            </button>
+                        </div>   
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row hide" style="margin-bottom:20px;">
+                        <div class="col-md-3 col-xs-6">
+                            <button id="btn_distance" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-ban"></i> 
+                                Check Distance
+                            </button>
+                        </div> 
+                        <div class="col-md-3 col-xs-6">                    
+                            <button id="btn_fetch_circle" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-ban"></i> 
+                                Get Circle Location
+                            </button>
+                        </div>                     
+                        <div class="col-md-3 col-xs-6">
+                            <button id="btn_remove_marker" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-ban"></i> 
+                                Hapus Marker
+                            </button>
+                        </div>  
+                        <div class="col-md-3 col-xs-6">
+                            <button id="btn_remove_circle" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-ban"></i> 
+                                Hapus Circle
+                            </button>
+                        </div>  
+                    </div>
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-md-6 col-xs-6">
+                            <button id="btn_checkin_new" class="btn btn-primary btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-sign-in-alt"></i> 
+                                Check In
+                            </button>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <button id="btn_checkout_new" class="btn btn-danger btn-lg" type="button" style="width:100%;">
+                                <i class="fas fa-sign-out-alt"></i> 
+                                Check Out
+                            </button>
+                        </div>             
+                    </div>
+                <!-- </div>                 -->
+            </div>            
+            <div class="tab-pane" id="tab2">
                 <div class="row" style="margin-bottom:20px;">
                     <div class="col-md-12 col-xs-12">                    
                         <button id="btn_posting_new" class="btn btn-success btn-lg" type="button" style="width:100%;">
@@ -79,85 +158,6 @@
                     </div> -->
                     <!-- <?php #} ?> -->
                 </div>               
-            </div>
-            <div class="tab-pane" id="tab2">
-                <!-- <div class="col-md-12 col-xs-12 col-sm-12"> -->
-                    <div class="row" style="margin-bottom:20px;">
-                        <div class="col-md-12 col-xs-12">                    
-                            <button id="btn_fetch_location" class="btn btn-success btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-map-marker-alt"></i> 
-                                Perbarui Lokasi
-                            </button>
-                        </div>                    
-                    </div>
-                    <div class="row" style="margin-bottom:20px;">   
-                        <div class="col-md-12 col-xs-12">
-                            <div id="map" style="height: 400px; width: 100%;border:1px solid #eaeaea;"></div>
-                        </div>
-                    </div>                 
-                    <div class="col-md-12 col-xs-12" style="margin-top:20px;margin-bottom:20px;"> 
-                        <button id="btn_take_selfie" class="btn btn-primary btn-lg" type="button" style="width:100%;">
-                            <i class="fas fa-ban"></i> 
-                            Take Selfie
-                        </button>
-                    </div>
-                    <div class="row" style="margin-bottom:20px;">
-                        <div class="col-md-4 col-xs-4 padding-remove-side">
-                            <div class="form-group">
-                                <div class="controls">
-                                    <input name="latlng" id="latlng" type="text" class="form-control input-lg" placeholder="Lat & Lng">
-                                </div>
-                            </div>
-                        </div>                
-                        <div class="col-md-4 col-xs-4">                    
-                            <button id="btn_move_location" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-ban"></i> 
-                                Move Coordinate
-                            </button>
-                        </div>   
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="row" style="margin-bottom:20px;">
-                        <div class="col-md-3 col-xs-6">
-                            <button id="btn_distance" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-ban"></i> 
-                                Check Distance
-                            </button>
-                        </div> 
-                        <div class="col-md-3 col-xs-6">                    
-                            <button id="btn_fetch_circle" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-ban"></i> 
-                                Get Circle Location
-                            </button>
-                        </div>                     
-                        <div class="col-md-3 col-xs-6">
-                            <button id="btn_remove_marker" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-ban"></i> 
-                                Hapus Marker
-                            </button>
-                        </div>  
-                        <div class="col-md-3 col-xs-6">
-                            <button id="btn_remove_circle" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-ban"></i> 
-                                Hapus Circle
-                            </button>
-                        </div>  
-                    </div>
-                    <div class="row" style="margin-bottom:20px;">
-                        <div class="col-md-6 col-xs-6">
-                            <button id="btn_checkin_new" class="btn btn-primary btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-sign-in-alt"></i> 
-                                Check In
-                            </button>
-                        </div>
-                        <div class="col-md-6 col-xs-6">
-                            <button id="btn_checkout_new" class="btn btn-danger btn-lg" type="button" style="width:100%;">
-                                <i class="fas fa-sign-out-alt"></i> 
-                                Check Out
-                            </button>
-                        </div>             
-                    </div>
-                <!-- </div>                 -->
             </div>
             <div class="tab-pane" id="tab3">
             </div>                        
