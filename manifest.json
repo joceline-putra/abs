@@ -2,7 +2,7 @@
 	"name": "CSS System",
     "short_name": "CSS System",
 	"description": "CSS System Description",
-	"start_url": "https://jrn.aplikasi.cloud",
+	"start_url": "/attendance",
 	"background_color": "white",
 	"theme_color": "black",
 	"display": "standalone",
@@ -27,9 +27,14 @@
     ],
 	"icons": [
 		{
+			"src":"assets/core/favicon_96.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		},
+		{
 			"src":"assets/core/favicon_164.png",
 			"sizes": "164x164",
 			"type": "image/png"
-		}		 
+		}        		 
 	]
 }
