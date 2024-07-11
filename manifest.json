@@ -1,0 +1,35 @@
+{
+	"name": "CSS System",
+    "short_name": "CSS System",
+	"description": "CSS System Description",
+	"start_url": "https://jrn.aplikasi.cloud",
+	"background_color": "white",
+	"theme_color": "black",
+	"display": "standalone",
+	"orientation": "portrait-primary",	
+    "lang": "en-US",
+    "shortcuts" : [
+        {
+            "name": "Check IN",
+            "url": "/attendance?a=ci",
+            "description": "Check IN"
+        },
+        {
+            "name": "Post Gambar",
+            "url": "/attendance?a=po",
+            "description": "Post Gambar"
+        },
+        {
+            "name": "Check OUT",
+            "url": "/attendance?a=co",
+            "description": "Check OUT"
+        }		
+    ],
+	"icons": [
+		{
+			"src":"assets/core/favicon_164.png",
+			"sizes": "164x164",
+			"type": "image/png"
+		}		 
+	]
+}
