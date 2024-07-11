@@ -799,10 +799,10 @@ class Attendance extends MY_Controller{
             */
 
             $data['title'] = 'Attendance';
-            $data['_view'] = 'layouts/admin/menu/webpage/attendance';
+            $data['_view'] = 'layouts/admin/menu/webpage/attendance_leaflet';
             // $this->load->view('layouts/admin/attendance',$data);
             $this->load->view('layouts/admin/index',$data);
-            $this->load->view('layouts/admin/menu/webpage/attendance_js.php',$data);
+            $this->load->view('layouts/admin/menu/webpage/attendance_leaflet_js.php',$data);
             // $this->load->view($this->nav['admin']['layout'].'/firebase',$data);            
         }
     }
