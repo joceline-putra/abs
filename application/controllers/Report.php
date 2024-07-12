@@ -873,6 +873,48 @@ class Report extends MY_Controller{
         $this->load->view('layouts/admin/menu/prints/reports/report_absen',$data);
         // $this->load->view($file_js,$data);
     }
+    function report_absen_gambar($date_start,$date_end,$userr){
+        $data['periode'] = date("d-M-Y, H:i", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y, H:i", strtotime($date_end.' 23:59:59')); 
+        $data['periode_ringkasan'] = date("d-M-Y", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y", strtotime($date_end.' 23:59:59')); 
+        $data['branch'] = $this->Branch_model->get_branch(1);
+        
+        $order = $this->input->get('order');
+        $dir = $this->input->get('dir');
+        $type = $this->input->get('type');        
+
+        $limit  = null;
+        $start  = null;
+        $order  = $order;
+        $dir    = $dir;
+        $search = null;
+
+        $params = array(
+            'att_date_created >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+            'att_date_created <' => date("Y-m-d", strtotime($date_end)).' 23:59:59'
+        );
+        
+        if(($type > 0) and ($type < 99)){
+            $params['att_type'] = $type;
+        }else if($type > 99){
+            $params['att_type !='] = 3;
+        }
+
+        if(intval($userr) > 0){
+            $params['att_user_id'] = intval($userr);
+            $get_user = $this->User_model->get_user(intval($userr));
+            $data['userr'] = $get_user;
+        }
+
+        // var_dump($params);die;
+        $datas = $this->Attendance_model->get_all_attendance($params, $search, $limit, $start, $order, $dir);
+        // var_dump($datas);die;
+        $data['content'] = $datas;
+        $data['title']  = 'Laporan Absensi Bergambar';
+        // $data['_view']  = 'layouts/admin/menu/prints/absen';
+        // $file_js        = 'layouts/admin/menu/prints/recap_js.php';        
+        $this->load->view('layouts/admin/menu/prints/reports/report_absen_gambar',$data);
+        // $this->load->view($file_js,$data);
+    }
 }
 
 ?>

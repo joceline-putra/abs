@@ -52,13 +52,11 @@
             <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
                 <span class="fas fa-calendar-alt"></span> Aktifitas</a>
-            </li>       
-            <!-- 
+            </li>    
             <li class="">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="true">
-                <span class="fas fa-plus-square"></span> Post</a>
+                <span class="fas fa-plus-square"></span> Form Izin / Sakit</a>
             </li>
-            -->
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
@@ -203,6 +201,22 @@
                 </div>               
             </div>
             <div class="tab-pane" id="tab3">
+                <div class="row" style="margin-bottom:20px;">
+                    <div class="col-md-12 col-xs-12" style="margin-bottom:10px;">                    
+                        <button id="btn_izin_new" class="btn btn-success btn-lg" type="button" style="width:100%;">
+                            <i class="fas fa-edit"></i> 
+                            Form Izin
+                        </button>
+                    </div>       
+                    <div class="col-md-12 col-xs-12">                    
+                        <button id="btn_sakit_new" class="btn btn-success btn-lg" type="button" style="width:100%;">
+                            <i class="fas fa-edit"></i> 
+                            Form Sakit
+                        </button>
+                    </div>                                        
+                </div>                
+                <div class="row" id="activity_2">
+                </div>                 
             </div>                        
         </div>        
     </div>
@@ -319,6 +333,89 @@
                     </div>
                     <div class="col-md-6 col-xs-6">
                         <button id="btn_posting_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_izin" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Form Izin</h4>
+            </div>            
+            <div class="modal-body">
+                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                    <form id="form_izin" name="form_izin" method="" action="" enctype="multipart/form-data">       
+                        <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <a id="btn_take_izin" href="#" style="cursor:pointer;">
+                                    <img id="files_preview_izin" src="<?= site_url('upload/click_to_photo.png'); ?>" class="img-responsive" height="120px" width="100%" style="margin-bottom:5px;"/>
+                                </a>
+                                <div class="custom-file">
+                                    <input type="file" id="camera_input_izin" name="file" accept="image/*;capture=camera" style="display:none;"> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Catatan Izin</label>
+                                <textarea id="keterangan_izin" name="keterangan_izin" type="text" class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>                           
+                    </form> 
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_izin" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>                
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_izin_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_sakit" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Form Sakit</h4>
+            </div>            
+            <div class="modal-body">
+                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                    <form id="form_sakit" name="form_sakit" method="" action="" enctype="multipart/form-data">       
+                        <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Foto Surat Keterangan Sakit</label>
+                                <a id="btn_take_sakit" href="#" style="cursor:pointer;">
+                                    <img id="files_preview_sakit" src="<?= site_url('upload/click_to_photo.png'); ?>" class="img-responsive" height="120px" width="100%" style="margin-bottom:5px;"/>
+                                </a>
+                                <div class="custom-file">
+                                    <input type="file" id="camera_input_sakit" name="file" accept="image/*;capture=camera" style="display:none;"> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Keterangan Sakit</label>
+                                <textarea id="keterangan_sakit" name="keterangan_sakit" type="text" class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>                           
+                    </form> 
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_sakit" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>                
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_sakit_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
             </div>

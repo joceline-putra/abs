@@ -62,12 +62,20 @@ class Attendance_model extends CI_Model{
         
         return $this->db->get($this->table)->result_array();
     }  
-    function get_all_attendance_activity($att_type,$limit_start,$limit_end){
+    function get_all_attendance_activity($att_type,$limit_start,$limit_end,$user_group_id,$user_id){
+        // var_dump($user_group_id);die;
         if($att_type > 0){
             $where = "WHERE att_type = ".$att_type;
         }else{
             $where = "WHERE att_type > 0";
         }
+
+        if(intval($user_group_id) > 3){
+            $where .= " AND att_user_id = ".$user_id;
+        }else{
+
+        }
+
 
         $query = $this->db->query("
             SELECT a.*, u.user_username, u.user_fullname, fn_time_ago(a.att_date_created) AS time_ago,
@@ -76,7 +84,7 @@ class Attendance_model extends CI_Model{
             LEFT JOIN locations AS l ON (a.att_location_id=l.location_id)
             LEFT JOIN users AS u ON (a.att_user_id=u.user_id)
             $where
-            ORDER BY a.att_date_created DESC 
+            ORDER BY a.att_date_created DESC
             LIMIT $limit_start, $limit_end
         ");        
         return $query->result_array();

@@ -45,6 +45,7 @@ class Attendance extends MY_Controller{
 
             $data['session'] = $this->session->userdata();  
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+            $session_user_group_id = !empty($data['session']['user_data']['user_group_id']) ? $data['session']['user_data']['user_group_id'] : null;            
 
             $post = $this->input->post();
             $get  = $this->input->get();
@@ -111,9 +112,22 @@ class Attendance extends MY_Controller{
 
                     $att_type = 0;
                     $limit  = ($limit_start * $limit_end) - $limit_end;
-                        $get_data = $this->Attendance_model->get_all_attendance_activity($att_type,$limit, $limit_end);
+                        $get_data = $this->Attendance_model->get_all_attendance_activity($att_type,$limit, $limit_end,$session_user_group_id,$session_user_id);
                         if(count($get_data) > 0){
                             foreach($get_data as $v){
+                                if($v['att_type'] == 1){
+                                    $location_name = $v['location_name'].' - Check IN';
+                                }else if($v['att_type'] == 2){
+                                    $location_name = $v['location_name'].' - Check OUT';                                           
+                                }else if($v['att_type'] == 3){
+                                    $location_name = 'Post Gambar';          
+                                }else if($v['att_type'] == 4){
+                                    $location_name = 'Form Sakit';                         
+                                }else if($v['att_type'] == 5){
+                                    $location_name = 'Form Izin';                 
+                                }else{
+                                    $type_name = '-';
+                                }
                                 $datas[] = array(
                                     'att_id' => intval($v['att_id']),
                                     'att_type' => intval($v['att_type']),
@@ -124,13 +138,13 @@ class Attendance extends MY_Controller{
                                     'att_lng' => intval($v['att_lng']),
                                     'att_date_created' => $v['att_date_created'],
                                     'att_image_size' => $v['att_image_size'],
-                                    'att_address' => $v['att_address'],
-                                    'att_note' => $v['att_note'],
+                                    'att_address' => !empty($v['att_address']) ? $v['att_address'] : '',
+                                    'att_note' => !empty($v['att_note']) ? $v['att_note'] : '',
                                     'user_username' => $v['user_username'],
                                     'user_fullname' => $v['user_fullname'],   
                                     'user_image' => site_url('upload/default.png'),                             
                                     'time_ago' => $v['time_ago'],
-                                    'location_name' => !empty($v['location_name']) ? $v['location_name'] : 'memposting sebuah gambar'
+                                    'location_name' => $location_name
                                 );
                             }
                         }else{
@@ -736,7 +750,101 @@ class Attendance extends MY_Controller{
                     $this->Attendance_model->add_attendance($params);
                     $return->message = $set_msg;
                     break;
-                                    
+                case "izin":
+                    $params = array(
+                        'att_user_id' => $session_user_id,
+                        'att_type' => 5,
+                        // 'att_location_id' => $post['location_id'],
+                        // 'att_lat' => $post['lat'],
+                        // 'att_lng' => $post['lng'],
+                        'att_date_created' => date("YmdHis"),
+                        // 'att_address' => $post['address'],
+                        'att_note' => $post['keterangan']
+                    );
+                    //Base64 or Croppie Upload Image
+                    $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
+                    if(strlen($post_upload) > 10){
+                        $image_config=array(
+                            'compress' => 1,
+                            'width'=>$this->image_width,
+                            'height'=>$this->image_height
+                        );
+                        $watermark = [
+                            'text_1' => $post['keterangan'],
+                            'text_2' => 'Izin'                            
+                        ];
+                        $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
+                        // var_dump($upload_process['status']);die;
+                        if($upload_process['status'] == 1){
+                            // if ($get_att && $get_att['att_id']) {
+                                $params['att_image'] = $upload_process['result']['file_location'];
+                                $params['att_image_size'] = $upload_process['result']['file_size'];
+                                // if (!empty($get_att['att_image'])) {
+                                //     if (file_exists(FCPATH . $get_att['att_image'])) {
+                                //         unlink(FCPATH . $get_att['att_image']);
+                                //     }
+                                // }
+                            // }
+                            $return->status = 1;
+                            $set_msg = 'Berhasil kirim form izin';
+                        }else{
+                            $set_msg = 'Fungsi Gambar gagal';
+                            $next = false;
+                        }
+                    }
+                    //End of Base64 or Croppie  
+                    $this->Attendance_model->add_attendance($params);
+                    $return->status = 1;
+                    $return->message = 'Sukses kirim form izin';
+                    break;                   
+                case "sakit":
+                    $params = array(
+                        'att_user_id' => $session_user_id,
+                        'att_type' => 4,
+                        // 'att_location_id' => $post['location_id'],
+                        // 'att_lat' => $post['lat'],
+                        // 'att_lng' => $post['lng'],
+                        'att_date_created' => date("YmdHis"),
+                        // 'att_address' => $post['address'],
+                        'att_note' => $post['keterangan']
+                    );
+                    //Base64 or Croppie Upload Image
+                    $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
+                    if(strlen($post_upload) > 10){
+                        $image_config=array(
+                            'compress' => 1,
+                            'width'=>$this->image_width,
+                            'height'=>$this->image_height
+                        );
+                        $watermark = [
+                            'text_1' => $post['keterangan'],
+                            'text_2' => 'Sakit'                            
+                        ];
+                        $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
+                        // var_dump($upload_process['status']);die;
+                        if($upload_process['status'] == 1){
+                            // if ($get_att && $get_att['att_id']) {
+                                $params['att_image'] = $upload_process['result']['file_location'];
+                                $params['att_image_size'] = $upload_process['result']['file_size'];
+                                // if (!empty($get_att['att_image'])) {
+                                //     if (file_exists(FCPATH . $get_att['att_image'])) {
+                                //         unlink(FCPATH . $get_att['att_image']);
+                                //     }
+                                // }
+                            // }
+                            $return->status = 1;
+                            $set_msg = 'Berhasil kirim form sakit';
+                        }else{
+                            $set_msg = 'Fungsi Gambar gagal';
+                            $next = false;
+                        }
+                    }
+                    //End of Base64 or Croppie  
+                    // $return->status = 1;
+                    $return->message = $set_msg;
+                    $this->Attendance_model->add_attendance($params);
+                    $return->message = $set_msg;
+                    break;                   
                 default:
                     $return->message='No Action';
                     break; 

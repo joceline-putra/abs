@@ -146,27 +146,27 @@ class Search extends MY_Controller{
                     if($not_used==true){
                         $query = $this->db->query("
                             SELECT user_id AS id, user_code AS kode, user_username AS nama,
-                                (SELECT CONCAT(IFNULL(`user_code`,''), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,''))) AS `text`,
+                                (SELECT CONCAT(IFNULL(`user_fullname`,''), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,''))) AS `text`,
                                 CONCAT(user_group_name,' - ',user_username) AS user_by_group
                             FROM users
                             LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)
-                            WHERE user_flag=1 AND user_branch_id IS NULL AND (user_code LIKE '%".$terms."%' OR user_username LIKE '%".$terms."%' OR user_group_name LIKE '%".$terms."%')
+                            WHERE user_flag=1 AND user_branch_id IS NULL AND (user_fullname LIKE '%".$terms."%' OR user_username LIKE '%".$terms."%' OR user_group_name LIKE '%".$terms."%')
                         ");
                     }else{                        
                         $query = $this->db->query("
                             SELECT user_id AS id, user_code AS kode, user_username AS nama,
-                                (SELECT CONCAT(user_code, ' - ', `user_username`, ' - ', `user_group_name`)) AS `text`,
+                                (SELECT CONCAT(user_fullname, ' - ', `user_username`, ' - ', `user_group_name`)) AS `text`,
                                 CONCAT(user_group_name,' - ',user_username) AS user_by_group
                             FROM users
                             LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)
-                            WHERE user_branch_id=".$session_branch_id." AND user_flag=1 AND (user_code LIKE '%".$terms."%' OR user_username LIKE '%".$terms."%' OR user_group_name LIKE '%".$terms."%')
+                            WHERE user_branch_id=".$session_branch_id." AND user_flag=1 AND (user_fullname LIKE '%".$terms."%' OR user_username LIKE '%".$terms."%' OR user_group_name LIKE '%".$terms."%')
                         ");
                     }
                 }else{
                     if($not_used==true){
                         $query = $this->db->query("
                         SELECT user_id AS id, user_code AS kode, user_username AS nama,
-                            (SELECT CONCAT(IFNULL(user_code,'-'), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
+                            (SELECT CONCAT(IFNULL(user_fullname,'-'), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
                             , CONCAT(user_group_name,' - ',user_username) AS user_by_group
                         FROM users
                         LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)
@@ -174,8 +174,8 @@ class Search extends MY_Controller{
                         ");
                     }else{
                         $query = $this->db->query("
-                        SELECT user_id AS id, user_code AS kode, user_username AS nama,
-                            (SELECT CONCAT(IFNULL(user_code,'-'), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
+                        SELECT user_id AS id, user_fullname AS kode, user_username AS nama,
+                            (SELECT CONCAT(IFNULL(user_fullname,'-'), ' - ', IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
                             , CONCAT(user_group_name,' - ',user_username) AS user_by_group
                         FROM users
                         LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)

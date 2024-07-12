@@ -322,7 +322,7 @@ class User extends MY_Controller{
                     if($set_theme==true){
                         $return->status=1;
                         $return->message='Success';
-                        $return->url = base_url('admin');
+                        $return->url = base_url('attendance');
                     }
                     break;
                 case "change-password":

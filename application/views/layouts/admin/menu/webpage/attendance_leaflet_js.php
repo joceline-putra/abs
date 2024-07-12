@@ -50,6 +50,8 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);     
                 
+                
+                $(".leaflet-control-attribution").css('display','none');
             // L.marker([mapLAT, mapLNG]).addTo(map)
             //     .bindPopup('A pretty CSS popup.<br> Easily customizable.')
             //     .openPopup();                
@@ -393,7 +395,17 @@
             e.preventDefault();
             e.stopPropagation();
             document.getElementById('camera_input_checkout').click();
-        });                         
+        });  
+        $(document).on("click","#btn_take_izin, .btn_take_izin", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('camera_input_izin').click();
+        });                                 
+        $(document).on("click","#btn_take_sakit, .btn_take_sakit", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('camera_input_sakit').click();
+        });                                         
         $(document).on("change","#camera_input", function(e){
             e.preventDefault();
             e.stopPropagation();
@@ -486,7 +498,70 @@
                 });
                 // console.log(imageRESULT);
             }
-        });        
+        }); 
+        $(document).on("change","#camera_input_sakit", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            const file = event.target.files[0];
+            if (file) {
+                console.log(file.size / 1024 + ' KB');
+                new Compressor(file, {
+                    quality: 0.4,
+                    success(result) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            // img.src = e.target.result;
+                            // // imageRESULT = e.target.result;
+                            // img.classList.add('img_posting');
+                            // img.setAttribute('data-image', e.target.result);
+                            // img.style.maxWidth = '100%';
+                            // document.body.appendChild(img);
+                            $("#files_preview_sakit").attr('src',e.target.result);
+                        };
+                        reader.readAsDataURL(result);
+                        // imageRESULT = result;
+                        console.log('Compressed file size:', result.size / 1024, ' KB');
+                    },
+                    error(err) {
+                        console.log(err.message);
+                    },
+                });
+                // console.log(imageRESULT);
+            }
+        });
+        $(document).on("change","#camera_input_izin", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            const file = event.target.files[0];
+            if (file) {
+                console.log(file.size / 1024 + ' KB');
+                new Compressor(file, {
+                    quality: 0.4,
+                    success(result) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            // img.src = e.target.result;
+                            // // imageRESULT = e.target.result;
+                            // img.classList.add('img_posting');
+                            // img.setAttribute('data-image', e.target.result);
+                            // img.style.maxWidth = '100%';
+                            // document.body.appendChild(img);
+                            $("#files_preview_izin").attr('src',e.target.result);
+                        };
+                        reader.readAsDataURL(result);
+                        // imageRESULT = result;
+                        console.log('Compressed file size:', result.size / 1024, ' KB');
+                    },
+                    error(err) {
+                        console.log(err.message);
+                    },
+                });
+                // console.log(imageRESULT);
+            }
+        });         
+        
                 
         $(document).on("click","#btn_checkin_new", function(e){
             e.preventDefault();
@@ -505,7 +580,20 @@
             e.stopPropagation();
             $("#files_preview_posting").attr('src',checkOUTPHOTO);            
             $("#modal_posting").modal('show');
-        });                
+        });  
+        $(document).on("click","#btn_izin_new", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_preview_izin").attr('src',checkOUTPHOTO);             
+            $("#modal_izin").modal('show');
+        });
+        $(document).on("click","#btn_sakit_new", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_preview_sakit").attr('src',checkOUTPHOTO);            
+            $("#modal_sakit").modal('show');
+        });    
+
         $(document).on("click","#btn_checkin", function(e){
             e.preventDefault();
             e.stopPropagation();
@@ -651,6 +739,90 @@
                     // notif(0,err);
                 }
             });             
-        });         
+        });       
+        $(document).on("click","#btn_izin", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            // var markerPosition = marker.getLatLng();         
+            var form = new FormData();
+            form.append('action', 'izin');
+            // form.append('lat', markerPosition['lat']);         
+            // form.append('lng', markerPosition['lng']);    
+            form.append('keterangan', $("#keterangan_izin").val());     
+            // form.append('address',geocoderADDRESS); 
+            // form.append('file', $(".img_posting").attr('data-image'));   
+            form.append('file', $("#files_preview_izin").attr('src'));                                                                                          
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                    $("#btn_izin").attr('disabled',true);
+                    $("#btn_izin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        notif(s,m);
+                        $("#modal_izin").modal('hide');   
+                        $("#keterangan_izin").val('');
+                        $("#btn_izin").removeAttr('disabled');
+                        $("#btn_izin").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                        window.location.href = '<?php echo site_url('attendance');?>';
+                    }else{
+                        notif(s,m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    // notif(0,err);
+                }
+            });             
+        });   
+        $(document).on("click","#btn_sakit", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            // var markerPosition = marker.getLatLng();         
+            var form = new FormData();
+            form.append('action', 'sakit');
+            // form.append('lat', markerPosition['lat']);         
+            // form.append('lng', markerPosition['lng']);    
+            form.append('keterangan', $("#keterangan_sakit").val());     
+            // form.append('address',geocoderADDRESS); 
+            // form.append('file', $(".img_posting").attr('data-image'));   
+            form.append('file', $("#files_preview_sakit").attr('src'));                                                                                          
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                    $("#btn_sakit").attr('disabled',true);
+                    $("#btn_sakit").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        notif(s,m);
+                        $("#modal_sakit").modal('hide');   
+                        $("#keterangan_sakit").val('');
+                        $("#btn_sakit").removeAttr('disabled');
+                        $("#btn_sakit").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                        window.location.href = '<?php echo site_url('attendance');?>';
+                    }else{
+                        notif(s,m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    // notif(0,err);
+                }
+            });             
+        });                    
     });        
 </script>

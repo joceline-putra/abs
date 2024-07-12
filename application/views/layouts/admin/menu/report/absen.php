@@ -46,12 +46,12 @@
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <a href="#" class="btn-print-all" data-action="1" data-format="html" data-request="report_absen">
-                                                        <i class="fas fa-file-pdf"></i>&nbsp;&nbsp;PDF
+                                                        <i class="fas fa-file-pdf"></i>&nbsp;&nbsp;Tanpa Gambar
                                                     </a>
                                                 </li>
-                                                <li class="hide">
-                                                    <a href="#" class="btn-print-all" data-action="2" data-format="xls" data-request="report_absen">
-                                                        <i class="fas fa-file-excel"></i>&nbsp;&nbsp;Excel
+                                                <li class="">
+                                                    <a href="#" class="btn-print-all" data-action="2" data-format="html" data-request="report_absen_gambar">
+                                                        <i class="fas fa-file-excel"></i>&nbsp;&nbsp;Dengan Gambar
                                                     </a>
                                                 </li>
                                             </ul>                      
