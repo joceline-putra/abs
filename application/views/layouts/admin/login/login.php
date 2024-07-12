@@ -148,7 +148,7 @@ $project = ($_SERVER['SERVER_NAME'] == 'localhost') ? strtoupper(substr($_SERVER
                                 <div class="row">
                                     <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                         <!-- <label class="form-label">Username</label> -->
-                                        <input class="form-control" id="txtusername" name="username" type="text" required placeholder="Username" value="">
+                                        <input class="form-control" id="txtusername" name="username" type="text" required placeholder="Telepon" value="">
                                     </div>
                                 </div>
                             <?php } ?>
@@ -309,7 +309,7 @@ $project = ($_SERVER['SERVER_NAME'] == 'localhost') ? strtoupper(substr($_SERVER
                     var next = true;
 
                     if ($("#login-form input[name='username']").val().length == 0) {
-                        notif(0, 'Username belum diisi');
+                        notif(0, 'Telepon belum diisi');
                         $("#txtusername").focus();
                         next = false;
                     }

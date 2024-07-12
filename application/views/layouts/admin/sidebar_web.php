@@ -7,6 +7,9 @@ $icon = 'none;';
         <p class="menu-title sm" style="padding-top:0px!important;margin:0px 0px 0px!important;">
         </p>
         <ul id="sidebar" class="sidebarz">        
+            <?php
+            if($session['user_data']['user_group_id'] == 10){
+            ?>                
             <li class="start"> 
                 <a href="<?php echo base_url('admin'); ?>">
                     <i class="fas fa-home"></i>
@@ -17,7 +20,13 @@ $icon = 'none;';
                         <li><a href="<?php echo site_url('attendance')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> CheckIn & Out</a></li>                        
                     </ul>
                 </li>                       
-            </li>            
+            </li>        
+            <?php
+            }
+
+            if($session['user_data']['user_group_id'] < 10){
+            
+            ?>    
             <li class="start"> 
                 <a href="<?php echo base_url('admin'); ?>">
                     <i class="fas fa-cogs"></i>
@@ -42,7 +51,10 @@ $icon = 'none;';
                         <li><a href="<?php echo site_url('configuration/branch')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> Perusahaan</a></li>
                     </ul>
                 </li>                       
-            </li>              
+            </li>    
+            <?php 
+            } 
+            ?>          
         </ul>
         <div class="clearfix"></div>
         <br><br>

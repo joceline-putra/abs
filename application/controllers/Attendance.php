@@ -607,6 +607,7 @@ class Attendance extends MY_Controller{
                     );
                     //Base64 or Croppie Upload Image
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
+                    // var_dump($post_upload);die;
                     if(strlen($post_upload) > 10){
                         $image_config=array(
                             'compress' => 1,
@@ -629,51 +630,15 @@ class Attendance extends MY_Controller{
                                 //     }
                                 // }
                             // }
+                            $return->status = 1;
+                            $set_msg = 'Berhasil checkin';                            
                         }else{
                             $return->message = 'Fungsi Gambar gagal';
                             $next = false;
                         }
                     }
                     //End of Base64 or Croppie 
-                    
-                    // Call Helper for Upload ?? NOT USED
-                    if(!empty($_FILES['filess'])){
-                        //convert post (Byte to KiloByte) < 
-                        if(intval($_FILES['file']['size'] / 1024) < ($this->allowed_file_size)){
-
-                            //Process for Upload
-                            $image_config=array(
-                                'compress' => 1,
-                                'width'=>$this->image_width,
-                                'height'=>$this->image_height
-                            );
-                            $upload_helper = upload_file_files($this->folder_upload, $_FILES['file'], $image_config);
-                            if ($upload_helper['status'] == 1) {
-
-                                //Add Image for params before update
-                                $params['att_image']        = $upload_helper['result']['file_location'];
-                                $params['att_image_size'] = $upload_helper['result']['file_size'];
-                                //Delete old files
-                                /*
-                                    if (!empty($datas['news_image'])) {
-                                        if (file_exists(FCPATH . $datas['news_image'])) {
-                                            unlink(FCPATH . $datas['news_image']);
-                                        }
-                                    }
-                                */
-                                $set_msg = 'Berhasil menyimpan dengan Gambar'; $next = true;
-                            }else{
-                                $set_msg = 'Error: '.$upload_helper['message']; $next = false;
-                            }
-                        }else{
-                            $set_msg = 'Gagal, ukuran melebihi '.($this->allowed_file_size / 1024).' Mb'; $next = false;
-                        }
-                    } else{
-                        $set_msg = 'Menyimpan tanpa gambar';
-                    }   
-                    // End Call Helper for Upload 
-                                        
-                    // var_dump($params);die;                  
+                                 
                     $this->Attendance_model->add_attendance($params);
                     $return->message = $set_msg;
                     break;
@@ -797,7 +762,14 @@ class Attendance extends MY_Controller{
             $this->load->model('Reference_model');
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
-
+            $sdate = date('Y-m-d').' 00:00:00';
+            $edate = date('Y-m-d').' 23:59:59';            
+            // var_dump($sdate);die;
+            
+            $get_activity = $this->Attendance_model->get_attendance_activity($sdate,$edate,$session_user_id);
+            // var_dump($get_activity);die;
+            $data['attendance_activity'] = $get_activity;
+            
             $data['title'] = 'Attendance';
             $data['_view'] = 'layouts/admin/menu/webpage/attendance_leaflet';
             // $this->load->view('layouts/admin/attendance',$data);

@@ -19,6 +19,9 @@
         let redICON     = 'upload/map_icon/red.png';
         let greenICON   = 'upload/map_icon/green.png';
 
+        let checkINPHOTO = "<?= site_url('upload/click_to_selfie.png'); ?>";
+        let checkOUTPHOTO = "<?= site_url('upload/click_to_photo.png'); ?>";
+
         function initMap() {
             // map = new google.maps.Map(document.getElementById('map'), {
             //     center: {lat: mapLAT, lng: mapLNG},
@@ -91,7 +94,7 @@
                 .openPopup();      
                 
             map.setView([position.lat,position.lng], mapZOOM);
-        }        
+        }
         function updateGeoCoder(latlng) {
             var url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
 
@@ -110,7 +113,7 @@
                     }
                 })
                 .catch(err => console.error(err));
-        }   
+        }
         function getCircle(){ //Ajax
             let form = new FormData();
             form.append('action', 'get_location');
@@ -405,10 +408,10 @@
                             const img = document.createElement('img');
                             img.src = e.target.result;
                             // imageRESULT = e.target.result;
-                            img.classList.add('img');
-                            img.setAttribute('data-image', e.target.result);
-                            img.style.maxWidth = '100%';
-                            document.body.appendChild(img);
+                            // img.classList.add('img');
+                            // img.setAttribute('data-image', e.target.result);
+                            // img.style.maxWidth = '100%';
+                            // document.body.appendChild(img);
                             $("#files_preview").attr('src',e.target.result);
                         };
                         reader.readAsDataURL(result);
@@ -434,12 +437,12 @@
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             const img = document.createElement('img');
-                            img.src = e.target.result;
-                            // imageRESULT = e.target.result;
-                            img.classList.add('img_checkout');
-                            img.setAttribute('data-image', e.target.result);
-                            img.style.maxWidth = '100%';
-                            document.body.appendChild(img);
+                            // img.src = e.target.result;
+                            // // imageRESULT = e.target.result;
+                            // img.classList.add('img_checkout');
+                            // img.setAttribute('data-image', e.target.result);
+                            // img.style.maxWidth = '100%';
+                            // document.body.appendChild(img);
                             $("#files_preview_checkout").attr('src',e.target.result);
                         };
                         reader.readAsDataURL(result);
@@ -465,12 +468,12 @@
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             const img = document.createElement('img');
-                            img.src = e.target.result;
-                            // imageRESULT = e.target.result;
-                            img.classList.add('img_posting');
-                            img.setAttribute('data-image', e.target.result);
-                            img.style.maxWidth = '100%';
-                            document.body.appendChild(img);
+                            // img.src = e.target.result;
+                            // // imageRESULT = e.target.result;
+                            // img.classList.add('img_posting');
+                            // img.setAttribute('data-image', e.target.result);
+                            // img.style.maxWidth = '100%';
+                            // document.body.appendChild(img);
                             $("#files_preview_posting").attr('src',e.target.result);
                         };
                         reader.readAsDataURL(result);
@@ -488,16 +491,19 @@
         $(document).on("click","#btn_checkin_new", function(e){
             e.preventDefault();
             e.stopPropagation();
+            $("#files_preview").attr('src',checkINPHOTO);             
             $("#modal_checkin").modal('show');
         });
         $(document).on("click","#btn_checkout_new", function(e){
             e.preventDefault();
             e.stopPropagation();
+            $("#files_preview_checkout").attr('src',checkOUTPHOTO);             
             $("#modal_checkout").modal('show');
         });
         $(document).on("click","#btn_posting_new", function(e){
             e.preventDefault();
             e.stopPropagation();
+            $("#files_preview_posting").attr('src',checkOUTPHOTO);            
             $("#modal_posting").modal('show');
         });                
         $(document).on("click","#btn_checkin", function(e){
@@ -505,7 +511,6 @@
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
             var mDistance = checkIfMarkerInCircles();
-            // console.log(mDistance);
             if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
@@ -517,37 +522,38 @@
                 form.append('location_id', mDistance['label']);       
                 // form.append('files',$("#camera_input")[0].files[0]);
                 form.append('address',geocoderADDRESS); 
-                form.append('file', $(".img").attr('data-image'));  
+                form.append('file', $("#files_preview").attr('src'));  
+                // form.append('file', $(".img").attr('src'));  
                 // form.append('files',imageRESULT);                                        
                 $.ajax({
                     type: "post",
                     url: url,
                     data: form, 
-                    // dataType: 'json',
-                    // cache: false,
+                    dataType: 'json',
+                    cache: false,
                     contentType: false,
                     processData: false,
                     beforeSend:function(x){
-                        notif(1,'Silahkan tunggu');
-                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                        // notif(1,'Silahkan tunggu');
+                        $("#btn_checkin").attr('disabled',true);
+                        $("#btn_checkin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
                     },
                     success:function(d){
-                        $("#modal_checkin").modal('hide');                        
-                        // let s = d.status;
-                        // let m = d.message;
-                        // let r = d.result;
-                        // if(parseInt(s) == 1){
-                        //     // notif(s,m);
-                        //     /* hint zz_for or zz_each */
-                            
-                        // }else{
-                        //     // notif(s,m);
-                        // }
-                        notif(1,'Sukses Checkin');
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(1,'Sukses Checkin');
+                            $("#modal_checkin").modal('hide');                        
+                            $("#btn_checkin").removeAttr('disabled');
+                            $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN'); 
+                            window.location.href = '<?php echo site_url('attendance');?>';
+                        }else{
+                            notif(s,m);
+                        }
                     },
                     error:function(xhr,status,err){
-                        // notif(0,err);
+                        notif(0,err);
                     }
                 });
             }else{
@@ -559,7 +565,6 @@
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
             var mDistance = checkIfMarkerInCircles();
-            // console.log(mDistance);
             if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
@@ -570,7 +575,8 @@
                 form.append('location_id', mDistance['label']);  
                 form.append('keterangan', $("#keterangan").val());  
                 form.append('address',geocoderADDRESS); 
-                form.append('file', $(".img_checkout").attr('data-image'));                                                                                   
+                // form.append('file', $(".img_checkout").attr('data-image')); 
+                form.append('file', $("#files_preview_checkout").attr('src'));                                                                                                    
                 $.ajax({
                     type: "post",
                     url: url,
@@ -578,23 +584,23 @@
                     dataType: 'json', cache: 'false', 
                     contentType: false, processData: false,
                     beforeSend:function(x){
-                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
-                        notif(1,'Silahkan tunggu');
+                        // notif(1,'Silahkan tunggu');
+                        $("#btn_checkout").attr('disabled',true);
+                        $("#btn_checkout").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
                     },
                     success:function(d){
                         let s = d.status;
                         let m = d.message;
                         let r = d.result;
                         if(parseInt(s) == 1){
-                            // notif(s,m);
-                            /* hint zz_for or zz_each */
-                            $("#modal_checkout").modal('hide');   
-                            $("#keterangan").val('');
+                            notif(s,m);
+                            $("#modal_checkout").modal('hide');                        
+                            $("#btn_checkout").removeAttr('disabled');
+                            $("#btn_checkout").html('<i class="fas fa-sign-out-alt"></i> Check OUT');  
+                            window.location.href = '<?php echo site_url('attendance');?>';                            
                         }else{
-                            // notif(s,m);
+                            notif(s,m);
                         }
-                        notif(1,'Sukses checkout');
                     },
                     error:function(xhr,status,err){
                         // notif(0,err);
@@ -614,7 +620,8 @@
             form.append('lng', markerPosition['lng']);    
             form.append('keterangan', $("#keterangan_posting").val());     
             form.append('address',geocoderADDRESS); 
-            form.append('file', $(".img_posting").attr('data-image'));                                                                           
+            // form.append('file', $(".img_posting").attr('data-image'));   
+            form.append('file', $("#files_preview_posting").attr('src'));                                                                                          
             $.ajax({
                 type: "post",
                 url: url,
@@ -622,23 +629,23 @@
                 dataType: 'json', cache: 'false', 
                 contentType: false, processData: false,
                 beforeSend:function(x){
-                    notif(1,'Silahkan tunggu');
-                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    $("#btn_posting").attr('disabled',true);
+                    $("#btn_posting").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
                 },
                 success:function(d){
                     let s = d.status;
                     let m = d.message;
                     let r = d.result;
                     if(parseInt(s) == 1){
-                        // notif(s,m);
-                        /* hint zz_for or zz_each */
+                        notif(s,m);
                         $("#modal_posting").modal('hide');   
                         $("#keterangan_posting").val('');
+                        $("#btn_posting").removeAttr('disabled');
+                        $("#btn_posting").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                        window.location.href = '<?php echo site_url('attendance');?>';
                     }else{
-                        // notif(s,m);
+                        notif(s,m);
                     }
-                    notif(1,'Sukses post gambar');
                 },
                 error:function(xhr,status,err){
                     // notif(0,err);

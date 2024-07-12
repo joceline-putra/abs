@@ -53,6 +53,7 @@ class Login extends My_Controller{
         $this->load->model('Aktivitas_model');           
         $this->load->model('Branch_model');
         $this->load->model('App_package_model');
+        $this->load->model('Attendance_model');        
 
         //Get Branch
         $get_branch = $this->Branch_model->get_branch(1);
@@ -66,7 +67,7 @@ class Login extends My_Controller{
         // $this->app_logo     = site_url().'upload/branch/default_logo.png';
         // $this->app_logo_sidebar = site_url().'upload/branch/default_sidebar.png';        
         
-        $this->default_menu_cashier = site_url().'sales/pos3';
+        $this->default_menu = site_url().'attendance';
     }
     function index(){ //Default Login Index Layout
         //Logo Branch
@@ -766,36 +767,36 @@ class Login extends My_Controller{
                     if(intval($user_info['branch_flag']) == 1){
                         $update_user_last_login = $this->User_model->update_user($user_info['user_id'],array('user_date_last_login'=>date("YmdHis")));
                         $user_group = $this->Login_model->get_group_info($user_info['user_user_group_id']); 
-                        
+
                         // Prepare Menu & Submenu by Session
-                        $menu_group = $this->Login_model->get_menu_group_by_user_menu($user_info['user_id']);
-                        $menus = array();
-                        foreach ($menu_group as $r) {
-                            if(intval($r['menu_active_count']) > 0){
-                                $menus[] = array(
-                                    'menu_group_id' => $r['menu_id'],
-                                    'menu_group_name' => $r['menu_name'],     
-                                    'menu_group_icon' => $r['menu_icon'],
-                                    'menu_group_link' => $r['menu_link'],
-                                    'menu_group_sorting' => $r['menu_sorting'],
-                                    'menu_group_flag' => $r['menu_flag'],
-                                    'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_id'],$user_info['user_id'])             
-                                );
-                            }
-                        }    
-                        $menu_result = $menus;
+                        // $menu_group = $this->Login_model->get_menu_group_by_user_menu($user_info['user_id']);
+                        // $menus = array();
+                        // foreach ($menu_group as $r) {
+                        //     if(intval($r['menu_active_count']) > 0){
+                        //         $menus[] = array(
+                        //             'menu_group_id' => $r['menu_id'],
+                        //             'menu_group_name' => $r['menu_name'],     
+                        //             'menu_group_icon' => $r['menu_icon'],
+                        //             'menu_group_link' => $r['menu_link'],
+                        //             'menu_group_sorting' => $r['menu_sorting'],
+                        //             'menu_group_flag' => $r['menu_flag'],
+                        //             'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_id'],$user_info['user_id'])             
+                        //         );
+                        //     }
+                        // }    
+                        // $menu_result = $menus;
                         
-                        // App Package
-                        $app_item = [];
-                        if($user_info['branch_app_package_id'] > 0){
-                            $app_item = array(
-                                'packege_id' => $user_info['branch_app_package_id'],
-                                'package_name' => "",
-                                'package_date_start' => date('Y-m-d h:i:s'),
-                                'package_date_end' => date('Y-m-d h:i:s'),
-                                'item' => $this->App_package_model->get_app_package_item($user_info['branch_app_package_id'])
-                            );
-                        }
+                        // // App Package
+                        // $app_item = [];
+                        // if($user_info['branch_app_package_id'] > 0){
+                        //     $app_item = array(
+                        //         'packege_id' => $user_info['branch_app_package_id'],
+                        //         'package_name' => "",
+                        //         'package_date_start' => date('Y-m-d h:i:s'),
+                        //         'package_date_end' => date('Y-m-d h:i:s'),
+                        //         'item' => $this->App_package_model->get_app_package_item($user_info['branch_app_package_id'])
+                        //     );
+                        // }
 
                         //Session Directory
                         $session_directory = site_url('admin');
@@ -815,6 +816,7 @@ class Login extends My_Controller{
                             'user_check_price_buy' => intval($user_info['user_check_price_buy']),
                             'user_check_price_sell' => intval($user_info['user_check_price_sell']),            
                             'last_time' => date('Ymdhis'),
+                            // 'last_activity' => $get_activity,
                             'branch' => array(
                                 'id' => $user_info['branch_id'],
                                 'code' => $user_info['branch_code'],
@@ -831,8 +833,8 @@ class Login extends My_Controller{
                                 'branch_logo_sidebar' => $user_info['branch_logo_sidebar'],
                                 'branch_location_id' => $user_info['branch_location_id']                                              
                             ),
-                            'package' => $app_item,
-                            'menu_access' => $menu_result
+                            // 'package' => $app_item,
+                            // 'menu_access' => $menu_result
                         );
 
                         //Aktivitas
@@ -882,8 +884,8 @@ class Login extends My_Controller{
                         // if(intval($user_has_branch) == 0){
                         //     $return_url = $return_url.'/setup';
                         // }
-                        if($user_info['user_user_group_id'] == 9){ // Cashier
-                            $return_url = $this->default_menu_cashier;
+                        if($user_info['user_user_group_id'] == 10){ // Cashier
+                            $return_url = $this->default_menu;
                         }
                         if($user_info['user_user_group_id'] == 1){
                             $this->session->set_flashdata('switch_branch',1);                                

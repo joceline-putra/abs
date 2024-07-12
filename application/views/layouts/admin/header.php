@@ -149,7 +149,7 @@ $sidebar_logo = !empty($session['user_data']['branch']['branch_logo_sidebar']) ?
                             <i class="fa fa-user-lock"></i>
                             <span style="position: relative;">
                                 &nbsp;
-                                <?php echo ucfirst($session['user_data']['user_name']); ?>
+                                <?php echo strtoupper($session['user_data']['user_fullname']); ?>
                             </span>
                         </a>
                         <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="user-options">

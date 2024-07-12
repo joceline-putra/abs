@@ -80,7 +80,21 @@ class Attendance_model extends CI_Model{
             LIMIT $limit_start, $limit_end
         ");        
         return $query->result_array();
-    }     
+    }   
+    function get_attendance_activity($sdate,$edate,$usr){
+        $query = $this->db->query("
+            SELECT *
+            FROM _attendances AS a
+            LEFT JOIN locations AS l ON (a.att_location_id=l.location_id)
+            LEFT JOIN users AS u ON (a.att_user_id=u.user_id)
+            WHERE a.att_date_created > '$sdate' AND a.att_date_created < '$edate'
+            AND a.att_type IN (1,2)
+            AND a.att_user_id = $usr
+            ORDER BY a.att_date_created DESC 
+            LIMIT 1
+        ");        
+        return $query->result_array();
+    }         
     function get_all_attendance_count($params,$search){
         $this->db->from($this->table);
         $this->set_params($params);

@@ -1,5 +1,48 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+            <div class="grid simple">
+                <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #ffffff;">
+                </div>      
+                <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #ffffff;"> 
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <h5 style="margin:0px;color:#746868;"><b><i class="fas fa-user" style="color:#746868;"></i></b> <?php echo strtoupper($session['user_data']['user_fullname']); ?></h5> 
+                        <h5 style="margin:0px;color:#746868;"><b><i class="fab fa-whatsapp" style="color:#746868;"></i></b> <?php echo $session['user_data']['user_phone']; ?></h5>   
+                        <h5 style="margin:0px;color:#746868;"><b>Aktifitas Terakhir</b>
+                            <?php
+                                $v = $attendance_activity;
+                                if(count($v) > 0){
+                                    if($v[0]['att_type'] == 1){
+                                        $type_name = '<div class="col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:10px;margin-top:5px;"><span class="label label-success">Check IN</span> <span class="label label-success">'.date("H:i, d-M-Y", strtotime($v[0]['att_date_created'])).'</span></div>';
+                                        $type_name .= '<div class="col-md-12 col-xs-12 padding-remove-side"><span class="label label-success">'.$v[0]['location_name'].'</span></div>';
+                                    }else if($v[0]['att_type'] == 2){
+                                        $type_name = '<div class="col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:10px;margin-top:5px;"><span class="label label-danger">Check OUT</span> <span class="label label-danger">'.date("H:i, d-M-Y", strtotime($v[0]['att_date_created'])).'</span></div>';
+                                        $type_name .= '<div class="col-md-12 col-xs-12 padding-remove-side"><span class="label label-success">'.$v[0]['location_name'].'</span></div>';                                             
+                                    }else if($v[0]['att_type'] == 3){
+                                        // $type_name = '<div class="col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:10px;margin-top:5px;"><span class="label label-danger">Check OUT</span> <span class="label label-danger">'.date("H:i, d-M-y", strtotime($v[0]['att_date_created'])).'</span></div>';
+                                        // $type_name .= '<div class="col-md-12 col-xs-12 padding-remove-side"><span class="label label-success">'.$v[0]['location_name'].'</span></div>';  
+                                        $type_name = '<br>Tidak ada aktifitas';      
+                                    }else if($v[0]['att_type'] == 4){
+                                        $type_name = '<br>Sakit';
+                                        // $total_sk = $total_sk + 1;                        
+                                    }else if($v[0]['att_type'] == 5){
+                                        $type_name = '<br>Izin';
+                                        // $total_iz = $total_iz + 1;                        
+                                    }else{
+                                        $type_name = '-';
+                                    }
+                                    echo $type_name; 
+                                }else{
+                                    echo '<br>-';
+                                }
+                            ?>
+                        </h5>                            
+                    </div>          
+                </div>
+            </div>
+        </div>        
+    </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <ul class="nav nav-tabs" role="tablist" style="display:inline;">  
             <li class="active">
@@ -20,7 +63,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <!-- <div class="col-md-12 col-xs-12 col-sm-12"> -->
-                    <div class="row" style="margin-bottom:20px;">
+                    <div class="row" style="margin-bottom:20px;">                          
                         <div class="col-md-12 col-xs-12">                    
                             <button id="btn_fetch_location" class="btn btn-success btn-lg" type="button" style="width:100%;">
                                 <i class="fas fa-map-marker-alt"></i> 
