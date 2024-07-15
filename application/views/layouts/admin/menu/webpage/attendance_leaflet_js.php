@@ -117,6 +117,7 @@
                 .catch(err => console.error(err));
         }
         function getCircle(){ //Ajax
+            console.log('getCircle() => ');
             let form = new FormData();
             form.append('action', 'get_location');
             $.ajax({
@@ -323,7 +324,10 @@
         window.onload = function() {
             initMap();
             getCircle();
-            setInterval(getLocation, 60000); // Polling setiap 10 detik
+            // setInterval(getLocation, 60000); // Polling setiap 10 detik
+            setTimeout(() => {
+                getLocation();
+            }, 3000);
         };
         // getCircle();
         // Dashboard Scroll Activities
