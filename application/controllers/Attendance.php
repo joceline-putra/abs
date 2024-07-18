@@ -610,6 +610,7 @@ class Attendance extends MY_Controller{
                     $return->result = $this->Lokasi_model->get_all_lokasis(['location_branch_id'=>1,'location_flag'=>1],null,null,null,'location_name','asc');
                     break;
                 case "checkin":
+                    $next = true;
                     $params = array(
                         'att_user_id' => $session_user_id,
                         'att_type' => 1,
@@ -622,7 +623,7 @@ class Attendance extends MY_Controller{
                     //Base64 or Croppie Upload Image
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
                     // var_dump($post_upload);die;
-                    if(strlen($post_upload) > 10){
+                    if(strlen($post_upload) > 51){
                         $image_config=array(
                             'compress' => 1,
                             'width'=>$this->image_width,
@@ -650,13 +651,20 @@ class Attendance extends MY_Controller{
                             $return->message = 'Fungsi Gambar gagal';
                             $next = false;
                         }
+                    }else{
+                        $set_msg = 'Silahkan ambil gambar dahulu';
+                        $next = false;
                     }
                     //End of Base64 or Croppie 
-                                 
-                    $this->Attendance_model->add_attendance($params);
+                    
+                    if($next){
+                        $set_msg = $set_msg;
+                        $this->Attendance_model->add_attendance($params);
+                    }
                     $return->message = $set_msg;
                     break;
                 case "checkout":
+                    $next = true;                    
                     $params = array(
                         'att_user_id' => $session_user_id,
                         'att_type' => 2,
@@ -669,7 +677,7 @@ class Attendance extends MY_Controller{
                     );
                     //Base64 or Croppie Upload Image
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
-                    if(strlen($post_upload) > 10){
+                    if(strlen($post_upload) > 51){
                         $image_config=array(
                             'compress' => 1,
                             'width'=>$this->image_width,
@@ -700,7 +708,10 @@ class Attendance extends MY_Controller{
                     }
                     //End of Base64 or Croppie 
                                                 
-                    $this->Attendance_model->add_attendance($params);
+                    if($next){
+                        $set_msg = $set_msg;
+                        $this->Attendance_model->add_attendance($params);
+                    }
                     $return->message = $set_msg;
                     break;        
                 case "posting":
