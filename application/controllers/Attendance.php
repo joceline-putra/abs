@@ -10,6 +10,11 @@ class Attendance extends MY_Controller{
     public $image_height  = 250;
     public $allowed_file_size; // 5 MB -> 5000 KB
 
+    public $google_map_api_key = '';
+    // public $google_map_api_key = 'AIzaSyDOTfFdyPDjDuJNm7xs3Aek-tmnvfgszmw';
+    // public $google_map_api_key = 'AIzaSyD03eu0VKxN55-XSSMWTOeOKkulHCm7B8c';
+    // public $google_map_api_key = 'AIzaSyBh8a-IZnm-HmIkDsPQPRVGq_XhIISB044';        
+
     function __construct(){
         parent::__construct();
         if(!$this->is_logged_in()){
@@ -611,6 +616,7 @@ class Attendance extends MY_Controller{
                     break;
                 case "checkin":
                     $next = true;
+                    $set_address = (strlen($post['address']) > 11) ? $post['address'] : '-';
                     $params = array(
                         'att_user_id' => $session_user_id,
                         'att_type' => 1,
@@ -618,7 +624,7 @@ class Attendance extends MY_Controller{
                         'att_lat' => $post['lat'],
                         'att_lng' => $post['lng'],
                         'att_date_created' => date("YmdHis"),
-                        'att_address' => $post['address']
+                        'att_address' => $set_address
                     );
                     //Base64 or Croppie Upload Image
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
@@ -631,7 +637,7 @@ class Attendance extends MY_Controller{
                         );
                         $watermark = [
                             'text_1' => $post['lat'].', '.$post['lng'],
-                            'text_2' => $post['address']                            
+                            'text_2' => $set_address                            
                         ];
                         $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
                         // var_dump($upload_process['status']);die;
@@ -664,7 +670,8 @@ class Attendance extends MY_Controller{
                     $return->message = $set_msg;
                     break;
                 case "checkout":
-                    $next = true;                    
+                    $next = true;      
+                    $set_address = (strlen($post['address']) > 11) ? $post['address'] : '-';                                  
                     $params = array(
                         'att_user_id' => $session_user_id,
                         'att_type' => 2,
@@ -672,7 +679,7 @@ class Attendance extends MY_Controller{
                         'att_lat' => $post['lat'],
                         'att_lng' => $post['lng'],
                         'att_date_created' => date("YmdHis"),
-                        'att_address' => $post['address'],
+                        'att_address' => $set_address,
                         'att_note' => $post['keterangan']
                     );
                     //Base64 or Croppie Upload Image
@@ -685,7 +692,7 @@ class Attendance extends MY_Controller{
                         );
                         $watermark = [
                             'text_1' => $post['lat'].', '.$post['lng'],
-                            'text_2' => $post['address']                            
+                            'text_2' => $set_address                         
                         ];
                         $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
                         // var_dump($upload_process['status']);die;
@@ -715,6 +722,7 @@ class Attendance extends MY_Controller{
                     $return->message = $set_msg;
                     break;        
                 case "posting":
+                    $set_address = (strlen($post['address']) > 11) ? $post['address'] : '-';
                     $params = array(
                         'att_user_id' => $session_user_id,
                         'att_type' => 3,
@@ -722,7 +730,7 @@ class Attendance extends MY_Controller{
                         'att_lat' => $post['lat'],
                         'att_lng' => $post['lng'],
                         'att_date_created' => date("YmdHis"),
-                        'att_address' => $post['address'],
+                        'att_address' => $set_address,
                         'att_note' => $post['keterangan']
                     );
                     //Base64 or Croppie Upload Image
@@ -735,7 +743,7 @@ class Attendance extends MY_Controller{
                         );
                         $watermark = [
                             'text_1' => $post['lat'].', '.$post['lng'],
-                            'text_2' => $post['address']                            
+                            'text_2' => $set_address                           
                         ];
                         $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
                         // var_dump($upload_process['status']);die;
@@ -876,26 +884,76 @@ class Attendance extends MY_Controller{
 
             $data['image_width'] = intval($this->image_width);
             $data['image_height'] = intval($this->image_height);
-            /*
-            // Reference Model
-            $this->load->model('Reference_model');
-            $data['reference'] = $this->Reference_model->get_all_reference();
-            */
+
             $sdate = date('Y-m-d').' 00:00:00';
             $edate = date('Y-m-d').' 23:59:59';            
-            // var_dump($sdate);die;
             
             $get_activity = $this->Attendance_model->get_attendance_activity($sdate,$edate,$session_user_id);
-            // var_dump($get_activity);die;
             $data['attendance_activity'] = $get_activity;
             
+            $data['google_map_api_key'] = $this->google_map_api_key;
+
             $data['title'] = 'Attendance';
             $data['_view'] = 'layouts/admin/menu/webpage/attendance_leaflet';
-            // $this->load->view('layouts/admin/attendance',$data);
             $this->load->view('layouts/admin/index',$data);
-            $this->load->view('layouts/admin/menu/webpage/attendance_leaflet_js.php',$data);
-            // $this->load->view($this->nav['admin']['layout'].'/firebase',$data);            
+            $this->load->view('layouts/admin/menu/webpage/attendance_leaflet_js.php',$data);           
         }
+    }
+    function gm(){ // Google Map
+        $firstdate = new DateTime('first day of this month');
+        $firstdateofmonth = $firstdate->format('d-m-Y');
+
+        $data['session'] = $this->session->userdata();  
+        $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+
+        $data['first_date'] = $firstdateofmonth;
+        $data['end_date'] = date("d-m-Y");
+        $data['hour'] = date("H:i");
+        $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
+
+        $data['image_width'] = intval($this->image_width);
+        $data['image_height'] = intval($this->image_height);
+
+        $sdate = date('Y-m-d').' 00:00:00';
+        $edate = date('Y-m-d').' 23:59:59';            
+        
+        $get_activity = $this->Attendance_model->get_attendance_activity($sdate,$edate,$session_user_id);
+        $data['attendance_activity'] = $get_activity;
+        
+        $data['google_map_api_key'] = $this->google_map_api_key;
+            
+        $data['title'] = 'Attendance';
+        $data['_view'] = 'layouts/admin/menu/webpage/attendance';
+        $this->load->view('layouts/admin/index',$data);
+        $this->load->view('layouts/admin/menu/webpage/attendance_js.php',$data);      
+    }
+    function osm(){ // Open Street Map
+        $firstdate = new DateTime('first day of this month');
+        $firstdateofmonth = $firstdate->format('d-m-Y');
+
+        $data['session'] = $this->session->userdata();  
+        $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+
+        $data['first_date'] = $firstdateofmonth;
+        $data['end_date'] = date("d-m-Y");
+        $data['hour'] = date("H:i");
+        $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
+
+        $data['image_width'] = intval($this->image_width);
+        $data['image_height'] = intval($this->image_height);
+
+        $sdate = date('Y-m-d').' 00:00:00';
+        $edate = date('Y-m-d').' 23:59:59';            
+        
+        $get_activity = $this->Attendance_model->get_attendance_activity($sdate,$edate,$session_user_id);
+        $data['attendance_activity'] = $get_activity;
+        
+        $data['google_map_api_key'] = $this->google_map_api_key;
+            
+        $data['title'] = 'Attendance';
+        $data['_view'] = 'layouts/admin/menu/webpage/attendance_leaflet';
+        $this->load->view('layouts/admin/index',$data);
+        $this->load->view('layouts/admin/menu/webpage/attendance_leaflet_js',$data);  
     }
 }
 

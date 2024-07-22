@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function() {   
         let url = "<?= base_url('attendance'); ?>";
+        let url_redirect = "<?= base_url('attendance/osm'); ?>";         
         let imageRESULT;
         //Map Config
         let mapLAT      = -6.200000;
@@ -639,7 +640,7 @@
                             $("#modal_checkin").modal('hide');                        
                             $("#btn_checkin").removeAttr('disabled');
                             $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN'); 
-                            window.location.href = '<?php echo site_url('attendance');?>';
+                            window.location.href = url_redirect;
                         }else{
                             notif(s,m);
                         }
@@ -689,13 +690,13 @@
                             $("#modal_checkout").modal('hide');                        
                             $("#btn_checkout").removeAttr('disabled');
                             $("#btn_checkout").html('<i class="fas fa-sign-out-alt"></i> Check OUT');  
-                            window.location.href = '<?php echo site_url('attendance');?>';                            
+                            window.location.href = url_redirect;                           
                         }else{
                             notif(s,m);
                         }
                     },
                     error:function(xhr,status,err){
-                        // notif(0,err);
+                        notif(0,err);
                     }
                 });       
             // }else{
@@ -734,7 +735,7 @@
                         $("#keterangan_posting").val('');
                         $("#btn_posting").removeAttr('disabled');
                         $("#btn_posting").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        window.location.href = '<?php echo site_url('attendance');?>';
+                        window.location.href = url_redirect;
                     }else{
                         notif(s,m);
                     }
@@ -776,7 +777,7 @@
                         $("#keterangan_izin").val('');
                         $("#btn_izin").removeAttr('disabled');
                         $("#btn_izin").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        window.location.href = '<?php echo site_url('attendance');?>';
+                        window.location.href = url_redirect;
                     }else{
                         notif(s,m);
                     }
@@ -818,7 +819,7 @@
                         $("#keterangan_sakit").val('');
                         $("#btn_sakit").removeAttr('disabled');
                         $("#btn_sakit").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        window.location.href = '<?php echo site_url('attendance');?>';
+                        window.location.href = url_redirect;
                     }else{
                         notif(s,m);
                     }
