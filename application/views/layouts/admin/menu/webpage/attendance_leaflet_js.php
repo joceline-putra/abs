@@ -602,8 +602,8 @@
             e.preventDefault();
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
-            var mDistance = checkIfMarkerInCircles();
-            if(mDistance['status'] == 1){
+            // var mDistance = checkIfMarkerInCircles();
+            // if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
                 // let form = new FormData($("#form_checkin")[0]);
@@ -648,16 +648,16 @@
                         notif(0,err);
                     }
                 });
-            }else{
-                notif(0,'Anda berada diluar zona absensi');
-            }
+            // }else{
+            //     notif(0,'Anda berada diluar zona absensi');
+            // }
         }); 
         $(document).on("click","#btn_checkout", function(e){
             e.preventDefault();
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
-            var mDistance = checkIfMarkerInCircles();
-            if(mDistance['status'] == 1){
+            // var mDistance = checkIfMarkerInCircles();
+            // if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
                 var form = new FormData();
@@ -698,9 +698,9 @@
                         // notif(0,err);
                     }
                 });       
-            }else{
-                    notif(0,'Anda berada diluar zona absensi');
-                }         
+            // }else{
+            //         notif(0,'Anda berada diluar zona absensi');
+            // }         
         }); 
         $(document).on("click","#btn_posting", function(e){
             e.preventDefault();
