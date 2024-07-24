@@ -17,8 +17,8 @@
         let additionalMarkers = [];            
         let infowindow;
 
-        let redICON     = 'upload/map_icon/red.png';
-        let greenICON   = 'upload/map_icon/green.png';
+        let redICON     = "<?php echo base_url('upload/map_icon/red.png'); ?>";
+        let greenICON   = "<?php echo base_url('upload/map_icon/green.png'); ?>";
 
         let checkINPHOTO = "<?= site_url('upload/click_to_selfie.png'); ?>";
         let checkOUTPHOTO = "<?= site_url('upload/click_to_photo.png'); ?>";
@@ -603,7 +603,7 @@
             e.preventDefault();
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
-            // var mDistance = checkIfMarkerInCircles();
+            var mDistance = checkIfMarkerInCircles();
             // if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     

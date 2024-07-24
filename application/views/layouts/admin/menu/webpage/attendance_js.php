@@ -17,8 +17,8 @@
         let additionalMarkers = [];            
         let infowindow;
 
-        let redICON     = 'upload/map_icon/red.png';
-        let greenICON   = 'upload/map_icon/green.png';
+        let redICON     = "<?php echo base_url('upload/map_icon/red.png'); ?>";
+        let greenICON   = "<?php echo base_url('upload/map_icon/green.png'); ?>";
 
         let checkINPHOTO = "<?= site_url('upload/click_to_selfie.png'); ?>";
         let checkOUTPHOTO = "<?= site_url('upload/click_to_photo.png'); ?>";
@@ -630,7 +630,7 @@
                 form.append('action', 'checkin');
                 form.append('lat', markerPosition.lat());         
                 form.append('lng', markerPosition.lng());  
-                form.append('location_id', mDistance['label']);       
+                form.append('location_id', mDistance['label']);
                 // form.append('files',$("#camera_input")[0].files[0]);
                 form.append('address',geocoderADDRESS); 
                 // form.append('file', $(".img").attr('data-image'));  
