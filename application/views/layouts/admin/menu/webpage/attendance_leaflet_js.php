@@ -615,9 +615,9 @@
                 form.append('lat', markerPosition['lat']);         
                 form.append('lng', markerPosition['lng']);  
                 form.append('location_id', mDistance['label']);       
-                // form.append('files',$("#camera_input")[0].files[0]);
+                form.append('files',$("#camera_input")[0].files[0]);
                 form.append('address',geocoderADDRESS); 
-                form.append('file', $("#files_preview").attr('src'));  
+                // form.append('file', $("#files_preview").attr('src'));  
                 // form.append('file', $(".img").attr('src'));  
                 // form.append('files',imageRESULT);                                        
                 $.ajax({
@@ -643,10 +643,12 @@
                             $("#btn_checkin").removeAttr('disabled');
                             $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN'); 
                             setTimeout(() => {
-                                window.location.href = url_redirect;
+                                // window.location.href = url_redirect;
                             }, vSET_TIMEOUT);
                         }else{
                             notif(s,m);
+                            $("#btn_checkin").removeAttr('disabled');
+                            $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN');                             
                         }
                     },
                     error:function(xhr,status,err){
@@ -840,6 +842,11 @@
                     // notif(0,err);
                 }
             });             
-        });                    
+        });             
+        
+        // $("#modal_test").modal('show');
+        // $(document).on("change","#camera_input_test", function(e){
+        
+        // });
     });        
 </script>

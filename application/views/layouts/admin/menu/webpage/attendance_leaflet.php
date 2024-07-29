@@ -422,6 +422,42 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal_test" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Form Test</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                    <form id="form_test" name="form_test" method="" action="" enctype="multipart/form-data">
+                        <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Foto Test</label>
+                                <a id="btn_take_test" href="#" style="cursor:pointer;">
+                                    <img id="files_preview_test" src="<?= site_url('upload/click_to_photo.png'); ?>" class="img-responsive" height="120px" width="100%" style="margin-bottom:5px;"/>
+                                </a>
+                                <div class="custom-file">
+                                    <input type="file" id="camera_input_test" name="file" accept="image/*;capture=camera" style="display:none;"> 
+                                </div>
+                            </div>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_test" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <button id="btn_test_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.1.1/dist/compressor.min.js"></script>
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGrJzgnYt1MWEtvYpBXGYxTR_EPNl7gjE&libraries=places" type="text/javascript"></script> -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
