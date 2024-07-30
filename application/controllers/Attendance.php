@@ -629,7 +629,8 @@ class Attendance extends MY_Controller{
                     //Base64 or Croppie Upload Image
                     $post_upload = !empty($this->input->post('file')) ? $this->input->post('file') : "";
                     // var_dump($post_upload);die;
-                    if(strlen($post_upload) > 51){
+                    // if(strlen($post_upload) > 51){
+                    if(isset($_FILES['file'])){
                         $image_config=array(
                             'compress' => 1,
                             'width'=>$this->image_width,
@@ -639,7 +640,8 @@ class Attendance extends MY_Controller{
                             'text_1' => $post['lat'].', '.$post['lng'],
                             'text_2' => $set_address                            
                         ];
-                        $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
+                        // $upload_process = upload_file_base64_watermark($this->folder_upload,$post_upload, $image_config,$watermark);
+                        $upload_process = upload_file_files($this->folder_upload, $_FILES['file'], $image_config);                        
                         // var_dump($upload_process['status']);die;
                         if($upload_process['status'] == 1){
                             // if ($get_att && $get_att['att_id']) {

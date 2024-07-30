@@ -256,12 +256,62 @@
                     mkdir($folder, 0775, true);
                 }
 
-                $file_name     = basename($_FILES['file']['name']);  
-                $file_size     = $_FILES['file']['size'];                      
-                $file_new_name = date('YmdHis') . '_' . uniqid() . '.' . strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-                $file_ext      = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-                if (move_uploaded_file($_FILES['file']['tmp_name'], $path . $file_new_name)) {
+                $filename = $_FILES['file'];
+                if (function_exists('exif_read_data')) {
+                    $exif = @exif_read_data($filename);
+                    if ($exif && isset($exif['Orientation'])) {
+                        $orientation = $exif['Orientation'];
+                        $image = imagecreatefromjpeg($filename);
+        
+                        switch ($orientation) {
+                            case 2:
+                                imageflip($image, IMG_FLIP_HORIZONTAL);
+                                break;
+                            case 3:
+                                $image = imagerotate($image, 180, 0);
+                                break;
+                            case 4:
+                                imageflip($image, IMG_FLIP_VERTICAL);
+                                break;
+                            case 5:
+                                $image = imagerotate($image, -90, 0);
+                                imageflip($image, IMG_FLIP_HORIZONTAL);
+                                break;
+                            case 6:
+                                $image = imagerotate($image, -90, 0);
+                                break;
+                            case 7:
+                                $image = imagerotate($image, 90, 0);
+                                imageflip($image, IMG_FLIP_HORIZONTAL);
+                                break;
+                            case 8:
+                                $image = imagerotate($image, 90, 0);
+                                break;
+                        }
+        
+                        // Save the corrected image over the original file
+                        imagejpeg($image, $filename, 90);
+                        imagedestroy($image);
+                    }
+                }
+
+                // var_dump($filename);die;
+                // array (size=5)
+                // 'name' => string '2015-08-11_02-35-29.jpg' (length=23)
+                // 'type' => string 'image/jpeg' (length=10)
+                // 'tmp_name' => string 'C:\wamp\tmp\phpE71E.tmp' (length=23)
+                // 'error' => int 0
+                // 'size' => int 796865
+
+
+                // $file_name     = basename($_FILES['file']['name']);  
+                $file_name     = basename($filename['name']);                  
+                $file_size     = $filename['size'];                      
+                $file_new_name = date('YmdHis') . '_' . uniqid() . '.' . strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $file_ext      = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));                
+                // if (move_uploaded_file($_FILES['file']['tmp_name'], $path . $file_new_name)) {
+                    if (move_uploaded_file($filename['tmp_name'], $path . $file_new_name)) {                
                     
                     //Compress Only if Image
                     if((!empty($compress['compress'])) && ($compress['compress'] == 1)){
@@ -276,7 +326,7 @@
                                 'maintain_ratio' => TRUE,
                                 'width' => $compress['width'],
                                 'height' => $compress['height'],
-                                'quality' => '10%'
+                                'quality' => '60%'
                             ];                                    
                             $ci->load->library('image_lib', $config);
                             $ci->image_lib->resize();
