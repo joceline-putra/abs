@@ -619,42 +619,51 @@
                 form.append('address',geocoderADDRESS); 
                 // form.append('file', $("#files_preview").attr('src'));  
                 // form.append('file', $(".img").attr('src'));  
-                // form.append('files',imageRESULT);                                        
-                $.ajax({
-                    type: "post",
-                    url: url,
-                    data: form, 
-                    dataType: 'json',
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    beforeSend:function(x){
-                        // notif(1,'Silahkan tunggu');
-                        $("#btn_checkin").attr('disabled',true);
-                        $("#btn_checkin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
-                    },
-                    success:function(d){
-                        let s = d.status;
-                        let m = d.message;
-                        let r = d.result;
-                        if(parseInt(s) == 1){
-                            notif(1,'Sukses Checkin');
-                            $("#modal_checkin").modal('hide');                        
-                            $("#btn_checkin").removeAttr('disabled');
-                            $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN'); 
-                            setTimeout(() => {
-                                window.location.href = url_redirect;
-                            }, vSET_TIMEOUT);
-                        }else{
-                            notif(s,m);
-                            $("#btn_checkin").removeAttr('disabled');
-                            $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN');                             
+                // form.append('files',imageRESULT);           
+                var next = true;
+                var fileInput = $("#camera_input")[0].files[0];
+                if (fileInput == null) {
+                    next = false;
+                    notif(0,'Photo wajib dipilih');
+                }
+
+                if(next){
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: form, 
+                        dataType: 'json',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend:function(x){
+                            // notif(1,'Silahkan tunggu');
+                            $("#btn_checkin").attr('disabled',true);
+                            $("#btn_checkin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                        },
+                        success:function(d){
+                            let s = d.status;
+                            let m = d.message;
+                            let r = d.result;
+                            if(parseInt(s) == 1){
+                                notif(1,'Sukses Checkin');
+                                $("#modal_checkin").modal('hide');                        
+                                $("#btn_checkin").removeAttr('disabled');
+                                $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN'); 
+                                setTimeout(() => {
+                                    window.location.href = url_redirect;
+                                }, vSET_TIMEOUT);
+                            }else{
+                                notif(s,m);
+                                $("#btn_checkin").removeAttr('disabled');
+                                $("#btn_checkin").html('<i class="fas fa-sign-in-alt"></i> Check IN');                             
+                            }
+                        },
+                        error:function(xhr,status,err){
+                            notif(0,err);
                         }
-                    },
-                    error:function(xhr,status,err){
-                        notif(0,err);
-                    }
-                });
+                    });
+                }
             // }else{
             //     notif(0,'Anda berada diluar zona absensi');
             // }
@@ -663,7 +672,7 @@
             e.preventDefault();
             e.stopPropagation();
             var markerPosition = marker.getLatLng();
-            // var mDistance = checkIfMarkerInCircles();
+            var mDistance = checkIfMarkerInCircles();
             // if(mDistance['status'] == 1){
                 // console.log(markerPosition.lat());
                 // console.log(markerPosition.lng());     
@@ -675,38 +684,49 @@
                 form.append('keterangan', $("#keterangan").val());  
                 form.append('address',geocoderADDRESS); 
                 // form.append('file', $(".img_checkout").attr('data-image')); 
-                form.append('file', $("#files_preview_checkout").attr('src'));                                                                                                    
-                $.ajax({
-                    type: "post",
-                    url: url,
-                    data: form, 
-                    dataType: 'json', cache: 'false', 
-                    contentType: false, processData: false,
-                    beforeSend:function(x){
-                        // notif(1,'Silahkan tunggu');
-                        $("#btn_checkout").attr('disabled',true);
-                        $("#btn_checkout").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
-                    },
-                    success:function(d){
-                        let s = d.status;
-                        let m = d.message;
-                        let r = d.result;
-                        if(parseInt(s) == 1){
-                            notif(s,m);
-                            $("#modal_checkout").modal('hide');                        
-                            $("#btn_checkout").removeAttr('disabled');
-                            $("#btn_checkout").html('<i class="fas fa-sign-out-alt"></i> Check OUT');  
-                            setTimeout(() => {
-                                window.location.href = url_redirect;
-                            }, vSET_TIMEOUT);                                               
-                        }else{
-                            notif(s,m);
+                // form.append('file', $("#files_preview_checkout").attr('src'));    
+                form.append('file',$("#camera_input_checkout")[0].files[0]);    
+                
+                var next = true;
+                var fileInput = $("#camera_input_checkout")[0].files[0];
+                if (fileInput == null) {
+                    next = false;
+                    notif(0,'Photo wajib dipilih');
+                }
+
+                if(next){                                                                                                                            
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: form, 
+                        dataType: 'json', cache: 'false', 
+                        contentType: false, processData: false,
+                        beforeSend:function(x){
+                            // notif(1,'Silahkan tunggu');
+                            $("#btn_checkout").attr('disabled',true);
+                            $("#btn_checkout").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                        },
+                        success:function(d){
+                            let s = d.status;
+                            let m = d.message;
+                            let r = d.result;
+                            if(parseInt(s) == 1){
+                                notif(s,m);
+                                $("#modal_checkout").modal('hide');                        
+                                $("#btn_checkout").removeAttr('disabled');
+                                $("#btn_checkout").html('<i class="fas fa-sign-out-alt"></i> Check OUT');  
+                                setTimeout(() => {
+                                    window.location.href = url_redirect;
+                                }, vSET_TIMEOUT);                                               
+                            }else{
+                                notif(s,m);
+                            }
+                        },
+                        error:function(xhr,status,err){
+                            notif(0,err);
                         }
-                    },
-                    error:function(xhr,status,err){
-                        notif(0,err);
-                    }
-                });       
+                    });      
+                } 
             // }else{
             //         notif(0,'Anda berada diluar zona absensi');
             // }         
@@ -722,38 +742,49 @@
             form.append('keterangan', $("#keterangan_posting").val());     
             form.append('address',geocoderADDRESS); 
             // form.append('file', $(".img_posting").attr('data-image'));   
-            form.append('file', $("#files_preview_posting").attr('src'));                                                                                          
-            $.ajax({
-                type: "post",
-                url: url,
-                data: form, 
-                dataType: 'json', cache: 'false', 
-                contentType: false, processData: false,
-                beforeSend:function(x){
-                    $("#btn_posting").attr('disabled',true);
-                    $("#btn_posting").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
-                },
-                success:function(d){
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                    if(parseInt(s) == 1){
-                        notif(s,m);
-                        $("#modal_posting").modal('hide');   
-                        $("#keterangan_posting").val('');
-                        $("#btn_posting").removeAttr('disabled');
-                        $("#btn_posting").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        setTimeout(() => {
-                            window.location.href = url_redirect;
-                        }, vSET_TIMEOUT);                        
-                    }else{
-                        notif(s,m);
+            // form.append('file', $("#files_preview_posting").attr('src'));     
+            form.append('file',$("#camera_input_posting")[0].files[0]);           
+            
+            var next = true;
+            var fileInput = $("#camera_input_posting")[0].files[0];
+            if (fileInput == null) {
+                next = false;
+                notif(0,'Photo wajib dipilih');
+            }
+                        
+            if(next){            
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        $("#btn_posting").attr('disabled',true);
+                        $("#btn_posting").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            $("#modal_posting").modal('hide');   
+                            $("#keterangan_posting").val('');
+                            $("#btn_posting").removeAttr('disabled');
+                            $("#btn_posting").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                            setTimeout(() => {
+                                window.location.href = url_redirect;
+                            }, vSET_TIMEOUT);                        
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        // notif(0,err);
                     }
-                },
-                error:function(xhr,status,err){
-                    // notif(0,err);
-                }
-            });             
+                });      
+            }       
         });       
         $(document).on("click","#btn_izin", function(e){
             e.preventDefault();
@@ -766,38 +797,48 @@
             form.append('keterangan', $("#keterangan_izin").val());     
             // form.append('address',geocoderADDRESS); 
             // form.append('file', $(".img_posting").attr('data-image'));   
-            form.append('file', $("#files_preview_izin").attr('src'));                                                                                          
-            $.ajax({
-                type: "post",
-                url: url,
-                data: form, 
-                dataType: 'json', cache: 'false', 
-                contentType: false, processData: false,
-                beforeSend:function(x){
-                    $("#btn_izin").attr('disabled',true);
-                    $("#btn_izin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
-                },
-                success:function(d){
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                    if(parseInt(s) == 1){
-                        notif(s,m);
-                        $("#modal_izin").modal('hide');   
-                        $("#keterangan_izin").val('');
-                        $("#btn_izin").removeAttr('disabled');
-                        $("#btn_izin").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        setTimeout(() => {
-                            window.location.href = url_redirect;
-                        }, vSET_TIMEOUT);
-                    }else{
-                        notif(s,m);
+            // form.append('file', $("#files_preview_izin").attr('src'));      
+            form.append('file',$("#camera_input_izin")[0].files[0]);   
+            var next = true;
+            var fileInput = $("#camera_input_izin")[0].files[0];
+            if (fileInput == null) {
+                next = false;
+                notif(0,'Photo wajib dipilih');
+            }
+                
+            if(next){
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        $("#btn_izin").attr('disabled',true);
+                        $("#btn_izin").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            $("#modal_izin").modal('hide');   
+                            $("#keterangan_izin").val('');
+                            $("#btn_izin").removeAttr('disabled');
+                            $("#btn_izin").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                            setTimeout(() => {
+                                window.location.href = url_redirect;
+                            }, vSET_TIMEOUT);
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        // notif(0,err);
                     }
-                },
-                error:function(xhr,status,err){
-                    // notif(0,err);
-                }
-            });             
+                });      
+            }       
         });   
         $(document).on("click","#btn_sakit", function(e){
             e.preventDefault();
@@ -810,38 +851,48 @@
             form.append('keterangan', $("#keterangan_sakit").val());     
             // form.append('address',geocoderADDRESS); 
             // form.append('file', $(".img_posting").attr('data-image'));   
-            form.append('file', $("#files_preview_sakit").attr('src'));                                                                                          
-            $.ajax({
-                type: "post",
-                url: url,
-                data: form, 
-                dataType: 'json', cache: 'false', 
-                contentType: false, processData: false,
-                beforeSend:function(x){
-                    $("#btn_sakit").attr('disabled',true);
-                    $("#btn_sakit").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
-                },
-                success:function(d){
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                    if(parseInt(s) == 1){
-                        notif(s,m);
-                        $("#modal_sakit").modal('hide');   
-                        $("#keterangan_sakit").val('');
-                        $("#btn_sakit").removeAttr('disabled');
-                        $("#btn_sakit").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
-                        setTimeout(() => {
-                            window.location.href = url_redirect;
-                        }, vSET_TIMEOUT);
-                    }else{
-                        notif(s,m);
+            // form.append('file', $("#files_preview_sakit").attr('src'));       
+            form.append('file',$("#camera_input_sakit")[0].files[0]);       
+            var next = true;
+            var fileInput = $("#camera_input_sakit")[0].files[0];
+            if (fileInput == null) {
+                next = false;
+                notif(0,'Photo wajib dipilih');
+            }
+                
+            if(next){            
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        $("#btn_sakit").attr('disabled',true);
+                        $("#btn_sakit").html('<i class="fas fa-spin fa-spinner"></i> Sedang Mengirim');
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            $("#modal_sakit").modal('hide');   
+                            $("#keterangan_sakit").val('');
+                            $("#btn_sakit").removeAttr('disabled');
+                            $("#btn_sakit").html('<i class="fas fa-sign-out-alt"></i> Kirim');  
+                            setTimeout(() => {
+                                window.location.href = url_redirect;
+                            }, vSET_TIMEOUT);
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        // notif(0,err);
                     }
-                },
-                error:function(xhr,status,err){
-                    // notif(0,err);
-                }
-            });             
+                });      
+            }       
         });             
         
         // $("#modal_test").modal('show');

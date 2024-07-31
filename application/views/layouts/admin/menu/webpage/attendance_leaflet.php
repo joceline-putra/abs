@@ -246,11 +246,11 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
-                        <button id="btn_checkin" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-in-alt"></span> Check IN</button>                
+                    <div class="col-md-6 col-xs-12 col-sm-12">
+                        <button id="btn_checkin" type="button" class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;"><span class="fas fa-sign-in-alt"></span> Check IN</button>                
                     </div>
-                    <div class="col-md-6 col-xs-6">
-                        <button id="btn_checkin_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
+                    <div class="col-md-6 col-xs-12 col-sm-12">
+                        <button id="btn_checkin_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;margin-bottom:10px;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
             </div>
@@ -287,11 +287,11 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
-                        <button id="btn_checkout" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Check OUT</button>                
+                    <div class="col-md-6 col-xs-12 col-sm-12">
+                        <button id="btn_checkout" type="button" class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px;"><span class="fas fa-sign-out-alt"></span> Check OUT</button>                
                     </div>
-                    <div class="col-md-6 col-xs-6">
-                        <button id="btn_checkout_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
+                    <div class="col-md-6 col-xs-12 col-sm-12">
+                        <button id="btn_checkout_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;margin-bottom:10px;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
             </div>
@@ -328,10 +328,10 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_posting" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>                
                     </div>
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_posting_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
@@ -369,10 +369,10 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_izin" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>                
                     </div>
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_izin_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
@@ -411,10 +411,10 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_sakit" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>                
                     </div>
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_sakit_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>
@@ -447,10 +447,10 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_test" type="button" class="btn btn-primary btn-lg" style="width:100%;"><span class="fas fa-sign-out-alt"></span> Kirim</button>
                     </div>
-                    <div class="col-md-6 col-xs-6">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <button id="btn_test_close" type="button" class="btn btn-secondary btn-lg" style="width:100%;" data-dismiss="modal"><span class="fas fa-times"></span> Tutup</button>
                     </div>    
                 </div>

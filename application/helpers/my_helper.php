@@ -323,10 +323,10 @@
                                 'source_image' => $path . $file_new_name,
                                 'new_image' => $path . $file_new_name,
                                 // 'create_thumb' => FALSE,
-                                'maintain_ratio' => TRUE,
+                                // 'maintain_ratio' => TRUE,
                                 'width' => $compress['width'],
                                 'height' => $compress['height'],
-                                'quality' => '60%'
+                                'quality' => '70%'
                             ];                                    
                             $ci->load->library('image_lib', $config);
                             $ci->image_lib->resize();
