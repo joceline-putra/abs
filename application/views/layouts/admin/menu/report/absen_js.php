@@ -6,6 +6,21 @@
         var url_print_trans = "<?= base_url('transaksi/print'); ?>";
         var url_print = "<?= base_url('report'); ?>";
         
+        $(function () {
+            //DatePicker
+            $("#start, #end").datepicker({
+                // defaultDate: new Date(),
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                enableOnReadOnly: true,
+                language: "en",
+                todayHighlight: true,
+                weekStart: 1
+            }).on("changeDate", function (e) { 
+                
+            });
+        });
+        
         $('#filter_kontak').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
             placeholder: '<i class="fas fa-search"></i> Search',

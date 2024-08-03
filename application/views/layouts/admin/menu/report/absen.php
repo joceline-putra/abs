@@ -58,10 +58,10 @@
                                         </div>                   
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:8px;">
+                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right">
                                         <label class="form-label">Periode Awal</label>
-                                        <div class="col-md-12 col-sm-12 padding-remove-side">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">
                                                 <input name="start" id="start" type="text" class="form-control input-sm" readonly="true"
                                                        value="<?php echo $first_date; ?>">
@@ -69,9 +69,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right">
                                         <label class="form-label">Periode Akhir</label>
-                                        <div class="col-md-12 col-sm-12 padding-remove-side">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">
                                                 <input name="end" id="end" type="text" class="form-control input-sm" readonly="true"
                                                        value="<?php echo $end_date; ?>">
@@ -99,7 +99,7 @@
                                             </select>
                                         </div>
                                     </div>                                    
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Sorting</label>
                                             <select id="filter_order" name="filter_order" class="form-control">
@@ -109,7 +109,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-1 col-md-1 col-xs-6 col-sm-6 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Urutan</label>
                                             <select id="filter_dir" name="filter_dir" class="form-control">
