@@ -82,7 +82,7 @@ nb-configuration.xml
 /nbproject/
 /application/config/constants.php
 /application/autocomplete/
-#application/config/database.php
+application/config/database.php
 application/config/constants.php
 
 #-------------------------
