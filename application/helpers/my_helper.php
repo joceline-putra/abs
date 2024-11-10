@@ -466,7 +466,7 @@
         }
         return $return;
     }
-    function upload_file_base64_watermark($path, $file, $compress = null, $watermark){ // ATTENDANCE.php Base64 or Croppie
+    function upload_file_base64_watermark($path = null, $file = null, $compress = null, $watermark = null){ // ATTENDANCE.php Base64 or Croppie
 
         $d1 = explode(";", $file); // data:image/jpeg
         $d2 = explode(",", $d1[1]); // base64,/9j/4AAQSkZJRgABAQAAAQ
