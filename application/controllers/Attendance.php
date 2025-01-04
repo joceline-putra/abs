@@ -611,8 +611,12 @@ class Attendance extends MY_Controller{
                     $return->recordsFiltered = $total;
                     break;
                 case "get_location":
+                    $params = [
+                        'location_branch_id' => !empty($post['branch']) ? $post['branch'] : 1,
+                        'location_flag' => 1
+                    ];
                     $return->status=1;
-                    $return->result = $this->Lokasi_model->get_all_lokasis(['location_branch_id'=>1,'location_flag'=>1],null,null,null,'location_name','asc');
+                    $return->result = $this->Lokasi_model->get_all_lokasis($params,null,5,0,'location_name','asc');
                     break;
                 case "checkin":
                     $next = true;

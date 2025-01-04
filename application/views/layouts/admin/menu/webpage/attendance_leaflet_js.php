@@ -1,5 +1,5 @@
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         let url = "<?= base_url('attendance'); ?>";
         let url_redirect = "<?= base_url('attendance/osm'); ?>";         
         let imageRESULT;

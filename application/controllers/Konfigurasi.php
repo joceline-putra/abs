@@ -240,23 +240,23 @@ class Konfigurasi extends MY_Controller{
                     'location_name' => $nama,
                     'location_note' => $keterangan, 
                     'location_user_id' => $session_user_id,          
-                    'location_branch_id' => $data['branch'],                                         
+                    'location_branch_id' => !empty($data['branch']) ? $data['branch'] : null,                                         
                     'location_date_created' => date("YmdHis"),
                     'location_date_updated' => date("YmdHis"),
                     'location_flag' => $status,
-                    'location_lat' => $data['lat'],
-                    'location_lng' => $data['lng'],
-                    'location_allow_radius' => $data['distance'],                                        
+                    'location_lat' => !empty($data['lat']) ? $data['lat'] : null,
+                    'location_lng' => !empty($data['lat']) ? $data['lat'] : null,
+                    'location_allow_radius' => !empty($data['distance']) ? $data['distance'] : null,                                      
                 );
                 $params_update = array(
                     'location_name' => $nama,
-                    'location_branch_id' => $data['branch'],                    
+                    'location_branch_id' => !empty($data['branch']) ? $data['branch'] : null,                    
                     'location_note' => $keterangan,
                     'location_date_updated' => date("YmdHis"),                    
                     'location_flag' => $status,
-                    'location_lat' => $data['lat'],
-                    'location_lng' => $data['lng'],
-                    'location_allow_radius' => $data['distance']                                   
+                    'location_lat' => !empty($data['lat']) ? $data['lat'] : null,
+                    'location_lng' => !empty($data['lat']) ? $data['lat'] : null,
+                    'location_allow_radius' => !empty($data['distance']) ? $data['distance'] : null,                                  
                 );             
                 $params_check = array(
                     'location_name' => $nama,

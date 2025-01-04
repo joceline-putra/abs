@@ -71,7 +71,7 @@
                     </div>
                     <div class="row" style="margin-bottom:20px;">   
                         <div class="col-md-12 col-xs-12">
-                            <div id="map" style="height: 200px; width: 100%;border:1px solid #eaeaea;"></div>
+                            <div id="map" style="height: 500px; width: 100%;border:1px solid #eaeaea;"></div>
                         </div>
                     </div>                 
                     <div class="hide col-md-12 col-xs-12" style="margin-top:20px;margin-bottom:20px;"> 

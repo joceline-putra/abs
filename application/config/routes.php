@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // $route['default_controller'] = 'Index/index';
-$route['default_controller']    = 'login';
+$route['default_controller']    = 'website';
 $route['404_override']          = 'website/notfound';
 $route['translate_uri_dashes']  = FALSE;
 $route['search']                = "search/index";
@@ -261,12 +261,4 @@ $route['search']                = "search/index";
 	// $route['properti/(:any)/(:any)/(:any)'] 		    = "website/product/$1/$2/$3"; //properti/jual/apartemen/semarang
 	// $route['properti/(:any)/(:any)/(:any)/(:any)'] 	= "website/product/$1/$2/$3/$4"; //properti/jual/apartemen/semarang/namaproduct
 	// $route['product'] 
-         
-/* Notify */
-	$route['notify/bank'] 					= "notify/pages/1";
-	$route['notify/mutation'] 				= "notify/pages/2"; 
-	$route['notify/balance'] 				= "notify/pages/3";
-	$route['notify/deposit'] 				= "notify/pages/4";            
-
-/* Kepooin */
-	$route['kepooin/shortlink'] 					= "kepooin";    
+    
