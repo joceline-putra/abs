@@ -7,25 +7,30 @@ $icon = 'none;';
         <p class="menu-title sm" style="padding-top:0px!important;margin:0px 0px 0px!important;">
         </p>
         <ul id="sidebar" class="sidebarz">        
-            <?php
-            if($session['user_data']['user_group_id'] == 10){
-            ?>                
             <li class="start"> 
                 <a href="<?php echo base_url('admin'); ?>">
                     <i class="fas fa-home"></i>
-                    <span class="title">Menu</span> <span class="selected"></span>
+                    <span class="title">Absensi</span> <span class="selected"></span>
                 </a> 
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('attendance')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> CheckIn & Out</a></li>                        
+                    <?php
+                    if($session['user_data']['user_group_id'] == 10){
+                    ?>                
+                        <li><a href="<?php echo site_url('attendance')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> CheckIn & Out</a></li>      
+                    <?php
+                    } else {
+                    ?>                
+                        <li><a href="<?php echo site_url('attendance/gm')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> via Google Map</a></li>
+                        <li><a href="<?php echo site_url('attendance/osm')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> via OpenStreet Map</a></li>                                           
+                    <?php 
+                    }
+                    ?>
                     </ul>
                 </li>                       
             </li>        
             <?php
-            }
-
             if($session['user_data']['user_group_id'] < 10){
-            
             ?>    
             <li class="start"> 
                 <a href="<?php echo base_url('admin'); ?>">
@@ -34,7 +39,7 @@ $icon = 'none;';
                 </a> 
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('report/attendance')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> Absensi</a></li>                          
+                        <li><a href="<?php echo site_url('report/attendance')?>"><i class="fas fa-hdd" style="display:<?php echo $icon; ?>"></i> Absensi</a></li>                                                   
                     </ul>
                 </li>                       
             </li>  
